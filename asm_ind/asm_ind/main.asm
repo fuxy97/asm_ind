@@ -100,7 +100,7 @@ fastCarry proc
 	add r10, 0x1
 	jmp @init_loop
 	movhpd xmm16, r12 
-
+	mov rax, r12
 
 	@init_loop:
 	mov rbx, 0x1

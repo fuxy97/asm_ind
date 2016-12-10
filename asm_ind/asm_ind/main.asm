@@ -188,40 +188,117 @@ ALU proc
 	je @switch + 112
 
 	@switch:
+	;-x
 	notm xmm0, xmm0
 	notm xmm1, xmm1
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
+	;-(xy)
 	andnpd xmm0, xmm4
 	andnpd xmm1, xmm5
 	andnpd xmm2, xmm6
 	andnpd xmm3, xmm7
 	jmp @end_switch
-	call f3
+	;-xUy
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+	orm xmm0, xmm4
+	orm xmm1, xmm5
+	orm xmm2, xmm6
+	orm xmm3, xmm7
 	jmp @end_switch
-	call f4
+	;1
+	xorpd xmm0, xmm0
+	xorpd xmm1, xmm1
+	xorpd xmm2, xmm2
+	xorpd xmm3, xmm3
+	;-------------------------
 	jmp @end_switch
-	call f5
+	;-(xUy)
+	orm xmm0, xmm4
+	orm xmm1, xmm5
+	orm xmm2, xmm6
+	orm xmm3, xmm7
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
 	jmp @end_switch
-	call f6
+	;-y
+	notm xmm4, xmm4
+	notm xmm5, xmm5
+	notm xmm5, xmm6
+	notm xmm6, xmm7
 	jmp @end_switch
-	call f7
+	;-(x+y)
+	xorm xmm0, xmm4
+	xorm xmm1, xmm5
+	xorm xmm2, xmm6
+	xorm xmm3, xmm7
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
 	jmp @end_switch
-	call f8
+	;xU-y
+	notm xmm4, xmm4
+	notm xmm5, xmm5
+	notm xmm5, xmm6
+	notm xmm6, xmm7
+	orm xmm0, xmm4
+	orm xmm1, xmm5
+	orm xmm2, xmm6
+	orm xmm3, xmm7
 	jmp @end_switch
-	call f9
+	;-xy
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+	andm xmm0, xmm4
+	andm xmm1, xmm5
+	andm xmm2, xmm6
+	andm xmm3, xmm7
 	jmp @end_switch
-	call f10
+	;x+y
+	xorm xmm0, xmm4
+	xorm xmm1, xmm5
+	xorm xmm2, xmm6
+	xorm xmm3, xmm7
 	jmp @end_switch
-	call f11
+	;y
+	;----------------------
 	jmp @end_switch
-	call f12
+	;xUy
+	orm xmm0, xmm4
+	orm xmm1, xmm5
+	orm xmm2, xmm6
+	orm xmm3, xmm7
 	jmp @end_switch
-	call f13
+	;0
+	;---------------------
 	jmp @end_switch
-	call f14
+	;x-y
+	notm xmm4, xmm4
+	notm xmm5, xmm5
+	notm xmm6, xmm6
+	notm xmm7, xmm7
+	andm xmm0, xmm4
+	andm xmm1, xmm5
+	andm xmm2, xmm6
+	andm xmm3, xmm7
 	jmp @end_switch
+	;xy
+	andpd xmm0, xmm4
+	andpd xmm1, xmm5
+	andpd xmm2, xmm6
+	andpd xmm3, xmm7
+	jmp @end_switch
+	;x
+	;------------------------
 	jmp @end_switch
 
 	@end_switch:

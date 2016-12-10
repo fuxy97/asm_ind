@@ -120,7 +120,7 @@ fastCarry proc
 	and r12, 80000000h
 	rcl r12, 1		
 
-	test r10, 0x1
+	test r10, 0xFFFFFFFF
 	jne r10
 
 	pop rbp

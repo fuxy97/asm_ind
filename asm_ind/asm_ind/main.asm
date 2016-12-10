@@ -78,8 +78,6 @@ ALU proc
 	movhps xmm6, [rbp + 144]
 	movlps xmm7, [rbp + 152]
 	movhps xmm7, [rbp + 160]
-	movlps xmm8, [rbp + 168]
-	movhps xmm8, [rbp + 176]
 	test rax, 10h
 	je  @continue
 	and rax, 1Fh
@@ -195,10 +193,10 @@ ALU proc
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
-	ornm xmm0, xmm4, xmm0
-	ornm xmm1, xmm5, xmm1
-	ornm xmm2, xmm6, xmm2
-	ornm xmm3, xmm7, xmm3
+	andnpd xmm0, xmm4
+	andnpd xmm1, xmm5
+	andnpd xmm2, xmm6
+	andnpd xmm3, xmm7
 	jmp @end_switch
 	call f3
 	jmp @end_switch

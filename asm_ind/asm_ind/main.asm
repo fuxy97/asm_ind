@@ -46,24 +46,23 @@ main proc
 	push rbp
 	mov rbp, rsp
 	
-
+	mov 
 
 	pop rbp
 	ret
 main endp
 
-f1 proc
-	ret
-f1 endp
-
-f2 proc
-	ret
-f2 endp
+fastCarry proc
+	
+fastCarry endp
 
 ALU proc
 	push rbp
 	mov rbp, rsp
 	mov rax, [rpb + 16] 
+	movlps xmm0, [rbp + 24]
+	movhps xmm0, [rbp + 32]
+	movsd xmm0, [rbp + ]
 	test rax, 10h
 	je  @continue
 	and rax, 1Fh
@@ -75,7 +74,7 @@ ALU proc
 	je @switch + 6
 
 	@switch:
-	call f1
+	notm 
 	jmp @end_switch
 	call f2
 	jmp @end_switch

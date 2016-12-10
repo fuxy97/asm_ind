@@ -4,6 +4,7 @@
 
 .stack
 
+
 andm macro x, y, z
 	 movapd z, x
 	 andpd z, y
@@ -39,6 +40,5 @@ endm
 
 .code
 _main proc
-	xor eax, eax
 _main endp
 end _main

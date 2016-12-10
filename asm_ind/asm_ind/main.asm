@@ -38,7 +38,16 @@ endm
 .data
 
 .code
-_main proc
-	xor eax, eax
-_main endp
-end _main
+_global proc
+	call main
+_global endp
+
+main proc
+	push ebp
+	mov ebp, esp
+	
+	pop ebp
+	ret
+main endp
+
+end _global

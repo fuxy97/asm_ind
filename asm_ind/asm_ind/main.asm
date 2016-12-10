@@ -32,7 +32,7 @@ endm
 ornm macro x, y, z
 	movapd z, x
 	orpd z, y
-	andnpd
+	andnpd z, z
 endm
 
 .data
@@ -190,9 +190,15 @@ ALU proc
 	je @switch + 112
 
 	@switch:
-	notm 
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
 	jmp @end_switch
-	call f2
+	ornm xmm0, xmm4, xmm0
+	ornm xmm1, xmm5, xmm1
+	ornm xmm2, xmm6, xmm2
+	ornm xmm3, xmm7, xmm3
 	jmp @end_switch
 	call f3
 	jmp @end_switch

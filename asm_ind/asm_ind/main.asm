@@ -62,7 +62,6 @@ ALU proc
 	mov rax, [rpb + 16] 
 	movlps xmm0, [rbp + 24]
 	movhps xmm0, [rbp + 32]
-	movsd xmm0, [rbp + ]
 	test rax, 10h
 	je  @continue
 	and rax, 1Fh

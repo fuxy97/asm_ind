@@ -174,6 +174,77 @@ fastCarry proc
 	ret
 fastCarry endp
 
+PgGg proc
+	push rbp
+	mov rbp, rsp
+	movlps xmm0, [rbp + 16]
+	movhps xmm0, [rbp + 32]
+	movlps xmm1, [rbp + 40]
+	movhps xmm1, [rbp + 48]
+	movlps xmm2, [rbp + 56]
+	movhps xmm2, [rbp + 64]
+	movlps xmm3, [rbp + 72]
+	movhps xmm3, [rbp + 80]
+	movlps xmm4, [rbp + 16]
+	movhps xmm4, [rbp + 32]
+	movlps xmm5, [rbp + 40]
+	movhps xmm5, [rbp + 48]
+	movlps xmm6, [rbp + 56]
+	movhps xmm6, [rbp + 64]
+	movlps xmm7, [rbp + 72]
+	movhps xmm7, [rbp + 80]
+	
+	xorps xmm10, xmm7
+	movaps xmm9, xmm3
+	movaps xmm8, xmm3
+	mov rcx, 128	
+	@loop:
+	pslldq xmm8, 1			
+	pslldq xmm10, 1
+	andps xmm9, xmm8
+	andps xmm10, xmm9 
+	orps xmm7, xmm10
+	loop @loop
+
+	movaps xmm10, xmm6
+	movaps xmm8, xmm2
+	mov rcx, 128
+	@loop:
+	pslldq xmm8, 1			
+	pslldq xmm10, 1
+	andps xmm9, xmm8
+	andps xmm10, xmm9 
+	orps xmm7, xmm10
+	loop @loop
+
+	movaps xmm10, xmm5
+	movaps xmm8, xmm1
+	mov rcx, 128
+	@loop:
+	pslldq xmm8, 1			
+	pslldq xmm10, 1
+	andps xmm9, xmm8
+	andps xmm10, xmm9 
+	orps xmm7, xmm10
+	loop @loop
+
+	movaps xmm10, xmm4
+	movaps xmm8, xmm0
+	mov rcx, 128
+	@loop:
+	pslldq xmm8, 1			
+	pslldq xmm10, 1
+	andps xmm9, xmm8
+	andps xmm10, xmm9 
+	orps xmm7, xmm10
+	loop @loop
+
+	movlps rax, xmm9
+	movlps rdx, xmm7
+	pop rbp
+	ret
+PgGg endp
+
 ALU proc
 	push rbp
 	mov rbp, rsp

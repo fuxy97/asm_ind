@@ -102,6 +102,54 @@ fastCarry proc
 	movhpd xmm16, r12 
 	mov rax, r12
 
+	movlpd rdx, xmm9
+	movlpd r11, xmm13
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movlpd xmm17, rax 
+	mov rax, r12
+
+	movhpd rdx, xmm9
+	movhpd r11, xmm13
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movhpd xmm17, r12 
+	mov rax, r12
+
+	movlpd rdx, xmm10
+	movlpd r11, xmm14
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movlpd xmm18, rax 
+	mov rax, r12
+
+	movhpd rdx, xmm10
+	movhpd r11, xmm14
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movhpd xmm18, r12 
+	mov rax, r12
+
+	movlpd rdx, xmm11
+	movlpd r11, xmm15
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movlpd xmm19, rax 
+	mov rax, r12
+
+	movhpd rdx, xmm11
+	movhpd r11, xmm15
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movhpd xmm19, r12 
+	mov rax, r12
+
 	@init_loop:
 	mov rbx, 0x1
 	mov rcx, 63

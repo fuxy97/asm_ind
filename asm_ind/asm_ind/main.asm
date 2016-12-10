@@ -4,7 +4,6 @@
 
 .stack
 
-
 andm macro x, y, z
 	 movapd z, x
 	 andpd z, y
@@ -44,11 +43,50 @@ _global proc
 _global endp
 
 main proc
-	push ebp
-	mov ebp, esp
+	push rbp
+	mov rbp, rsp
 	
-	pop ebp
+
+
+	pop rbp
 	ret
 main endp
+
+f1 proc
+	ret
+f1 endp
+
+f2 proc
+	ret
+f2 endp
+
+ALU proc
+	push rbp
+	mov rbp, rsp
+	mov rax, [rpb + 16] 
+	test rax, 10h
+	je  @continue
+	and rax, 1Fh
+	@continue:
+	
+	cmp rax, 10h	
+	je @switch
+	cmp rax, 11h
+	je @switch + 6
+
+	@switch:
+	call f1
+	jmp @end_switch
+	call f2
+	jmp @end_switch
+
+	jmp @end_switch
+
+
+	@end_switch:
+
+	pop rbp
+	ret
+ALU endp
 
 end _global

@@ -1,5 +1,3 @@
-.686
-
 .model stdcall, flat
 
 .stack
@@ -38,15 +36,12 @@ endm
 .data
 
 .code
-_global proc
+_global proc 
 	call main
-_global endp
 
 main proc
 	push rbp
 	mov rbp, rsp
-	
-	mov 
 
 	pop rbp
 	ret
@@ -56,24 +51,14 @@ fastCarry proc
 	push rbp
 	mov rbp, rsp
 	mov rax, [rbp + 16]
-	movlps xmm0, [rbp + 24]
-	movhps xmm0, [rbp + 32]
-	movlps xmm1, [rbp + 40]
-	movhps xmm1, [rbp + 48]
-	movlps xmm2, [rbp + 56]
-	movhps xmm2, [rbp + 64]
-	movlps xmm3, [rbp + 72]
-	movhps xmm3, [rbp + 80]
-	movlps xmm4, [rbp + 88]
-	movhps xmm4, [rbp + 96]
-	movlps xmm5, [rbp + 104]
-	movhps xmm5, [rbp + 112]
-	movlps xmm6, [rbp + 120]
-	movhps xmm6, [rbp + 128]
-	movlps xmm6, [rbp + 136]
-	movhps xmm6, [rbp + 144]
-	movlps xmm7, [rbp + 152]
-	movhps xmm7, [rbp + 160]
+	movdqu xmm0, xmmword ptr [rbp + 24]
+	movdqu xmm1, xmmword ptr [rbp + 40]
+	movdqu xmm2, xmmword ptr [rbp + 56]
+	movdqu xmm3, xmmword ptr [rbp + 72]
+	movdqu xmm4, xmmword ptr [rbp + 88]
+	movdqu xmm5, xmmword ptr [rbp + 104]
+	movdqu xmm6, xmmword ptr [rbp + 120]
+	movdqu xmm7, xmmword ptr [rbp + 136]
 	
 	;g
 	andm xmm0, xmm4, xmm8
@@ -86,67 +71,97 @@ fastCarry proc
 	orm xmm2, xmm6, xmm14
 	orm xmm3, xmm7, xmm15
 
-	movlpd rdx, xmm8
-	movlpd r11, xmm12
-	lea r10, [rip]
-	add r10, 0x1
+	movd rdx, xmm8
+	movd r11, xmm12
+	call @dummy1
+	@dummy1:
+	pop r10
+	;lea r10, [rip]
+	inc rax
 	jmp @init_loop
-	movlpd xmm16, rax 
+	movlpd xmm0, rax 
+	mov rax, r12
+	
+	movhpd xmm4, xmm8
+	movd rdx, xmm4
+	movhpd xmm4, xmm12
+	movd r11, xmm4
+	call @dummy2
+	@dummy2:
+	pop r10
+	;lea r10, [rip]
+	inc r10
+	jmp @init_loop
+	movhpd xmm0, rax 
 	mov rax, r12
 
-	movhpd rdx, xmm8
-	movhpd r11, xmm12
-	lea r10, [rip]
-	add r10, 0x1
+	movd rdx, xmm9
+	movd r11, xmm13
+	call @dummy3
+	@dummy3:
+	pop r10
+	;lea r10, [rip]
+	inc r10
 	jmp @init_loop
-	movhpd xmm16, rax 
+	movlpd xmm1, rax 
 	mov rax, r12
 
-	movlpd rdx, xmm9
-	movlpd r11, xmm13
-	lea r10, [rip]
-	add r10, 0x1
+	movhpd xmm4, xmm9
+	movd rdx, xmm4
+	movhpd xmm4, xmm13
+	movd r11, xmm4
+	call @dummy4
+	@dummy4:
+	pop r10
+	;lea r10, [rip]
+	inc r10
 	jmp @init_loop
-	movlpd xmm17, rax 
+	movhpd xmm1, rax 
 	mov rax, r12
 
-	movhpd rdx, xmm9
-	movhpd r11, xmm13
-	lea r10, [rip]
-	add r10, 0x1
+	movd rdx, xmm10
+	movd r11, xmm14
+	call @dummy5
+	@dummy5:
+	pop r10
+	;lea r10, [rip]
+	inc r10
 	jmp @init_loop
-	movhpd xmm17, rax 
+	movlpd xmm2, rax 
 	mov rax, r12
 
-	movlpd rdx, xmm10
-	movlpd r11, xmm14
-	lea r10, [rip]
-	add r10, 0x1
+
+	movhpd xmm4, xmm10
+	movd rdx, xmm4
+	movhpd xmm4, xmm14
+	movd r11, xmm4
+	call @dummy6
+	@dummy6:
+	pop r10
+	;lea r10, [rip]
+	inc r10
 	jmp @init_loop
-	movlpd xmm18, rax 
+	movhpd xmm2, rax 
 	mov rax, r12
 
-	movhpd rdx, xmm10
-	movhpd r11, xmm14
-	lea r10, [rip]
-	add r10, 0x1
+	movd rdx, xmm11
+	movd r11, xmm15
+	call @dummy7
+	@dummy7:
+	pop r10
+	;lea r10, [rip]
+	inc r10
 	jmp @init_loop
-	movhpd xmm18, rax 
+	movlpd xmm3, rax 
 	mov rax, r12
 
-	movlpd rdx, xmm11
-	movlpd r11, xmm15
-	lea r10, [rip]
-	add r10, 0x1
+	movhpd xmm4, xmm11
+	movd rdx, xmm4
+	movhpd xmm4, xmm15
+	movd r11, xmm4
+	xor rax, rax
 	jmp @init_loop
-	movlpd xmm19, rax 
-	mov rax, r12
-
-	movhpd rdx, xmm11
-	movhpd r11, xmm15
-	mov r10, 0x0
-	jmp @init_loop
-	movhpd xmm19, rax 
+	movhpd xmm3, rax 
 	mov rax, r12
 
 	@init_loop:
@@ -168,7 +183,7 @@ fastCarry proc
 	rcl r12, 1		
 
 	test r10, 0xFFFFFFFF
-	jne r10
+	jne r10b
 
 	pop rbp
 	ret
@@ -177,70 +192,62 @@ fastCarry endp
 PgGg proc
 	push rbp
 	mov rbp, rsp
-	movlps xmm0, [rbp + 16]
-	movhps xmm0, [rbp + 32]
-	movlps xmm1, [rbp + 40]
-	movhps xmm1, [rbp + 48]
-	movlps xmm2, [rbp + 56]
-	movhps xmm2, [rbp + 64]
-	movlps xmm3, [rbp + 72]
-	movhps xmm3, [rbp + 80]
-	movlps xmm4, [rbp + 16]
-	movhps xmm4, [rbp + 32]
-	movlps xmm5, [rbp + 40]
-	movhps xmm5, [rbp + 48]
-	movlps xmm6, [rbp + 56]
-	movhps xmm6, [rbp + 64]
-	movlps xmm7, [rbp + 72]
-	movhps xmm7, [rbp + 80]
+	movdqu xmm0, xmmword ptr [rbp + 16]
+	movdqu xmm1, xmmword ptr [rbp + 32]
+	movdqu xmm2, xmmword ptr [rbp + 48]
+	movdqu xmm3, xmmword ptr [rbp + 64]
+	movdqu xmm4, xmmword ptr [rbp + 80]
+	movdqu xmm5, xmmword ptr [rbp + 96]
+	movdqu xmm6, xmmword ptr [rbp + 112]
+	movdqu xmm7, xmmword ptr [rbp + 128]
 	
 	xorps xmm10, xmm7
 	movaps xmm9, xmm3
 	movaps xmm8, xmm3
 	mov rcx, 128	
-	@loop:
+	@loop1:
 	pslldq xmm8, 1			
 	pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
-	loop @loop
+	loop @loop1
 
 	movaps xmm10, xmm6
 	movaps xmm8, xmm2
 	mov rcx, 128
-	@loop:
+	@loop2:
 	pslldq xmm8, 1			
 	pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
-	loop @loop
+	loop @loop2
 
 	movaps xmm10, xmm5
 	movaps xmm8, xmm1
 	mov rcx, 128
-	@loop:
+	@loop3:
 	pslldq xmm8, 1			
 	pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
-	loop @loop
+	loop @loop3
 
 	movaps xmm10, xmm4
 	movaps xmm8, xmm0
 	mov rcx, 128
-	@loop:
+	@loop4:
 	pslldq xmm8, 1			
 	pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
-	loop @loop
+	loop @loop4
 
-	movlps rax, xmm9
-	movlps rdx, xmm7
+	movd rax, xmm9
+	movd rdx, xmm7
 	pop rbp
 	ret
 PgGg endp
@@ -248,25 +255,15 @@ PgGg endp
 ALU proc
 	push rbp
 	mov rbp, rsp
-	mov rax, [rpb + 16] 
-	movlps xmm0, [rbp + 24]
-	movhps xmm0, [rbp + 32]
-	movlps xmm1, [rbp + 40]
-	movhps xmm1, [rbp + 48]
-	movlps xmm2, [rbp + 56]
-	movhps xmm2, [rbp + 64]
-	movlps xmm3, [rbp + 72]
-	movhps xmm3, [rbp + 80]
-	movlps xmm4, [rbp + 88]
-	movhps xmm4, [rbp + 96]
-	movlps xmm5, [rbp + 104]
-	movhps xmm5, [rbp + 112]
-	movlps xmm6, [rbp + 120]
-	movhps xmm6, [rbp + 128]
-	movlps xmm6, [rbp + 136]
-	movhps xmm6, [rbp + 144]
-	movlps xmm7, [rbp + 152]
-	movhps xmm7, [rbp + 160]
+	mov rax, [rbp + 16] 
+	movdqu xmm0, xmmword ptr [rbp + 24]
+	movdqu xmm1, xmmword ptr [rbp + 40]
+	movdqu xmm2, xmmword ptr [rbp + 56]
+	movdqu xmm3, xmmword ptr [rbp + 72]
+	movdqu xmm4, xmmword ptr [rbp + 88]
+	movdqu xmm5, xmmword ptr [rbp + 104]
+	movdqu xmm6, xmmword ptr [rbp + 120]
+	movdqu xmm7, xmmword ptr [rbp + 136]
 	test rax, 10h
 	je  @continue
 	and rax, 1Fh
@@ -323,23 +320,23 @@ ALU proc
 	je @switch + 142
 	cmp rax, 6h
 	je @switch + 148
-	cmp rax, 7h
+	cmp rax, 07h
 	je @switch + 154
-	cmp rax, 8h
+	cmp rax, 08h
 	je @switch + 160
-	cmp rax, 9h
+	cmp rax, 09h
 	je @switch + 166
-	cmp rax, Ah
+	cmp rax, 0Ah
 	je @switch + 72
-	cmp rax, Bh
+	cmp rax, 0Bh
 	je @switch + 80
-	cmp rax, Ch
+	cmp rax, 0Ch
 	je @switch + 88
-	cmp rax, Dh
+	cmp rax, 0Dh
 	je @switch + 96
-	cmp rax, Eh
+	cmp rax, 0Eh
 	je @switch + 104
-	cmp rax, Fh
+	cmp rax, 0Fh
 	je @switch + 112
 
 	;c=1 M=0
@@ -384,10 +381,10 @@ ALU proc
 	notm xmm3, xmm3
 	jmp @end_switch
 	;-(xy)
-	andnpd xmm0, xmm4,xmm0
-	andnpd xmm1, xmm5,xmm1
-	andnpd xmm2, xmm6,xmm2
-	andnpd xmm3, xmm7,xmm3
+	andnpd xmm0, xmm4
+	andnpd xmm1, xmm5
+	andnpd xmm2, xmm6
+	andnpd xmm3, xmm7
 	jmp @end_switch
 	;-xUy
 	notm xmm0, xmm0
@@ -400,10 +397,10 @@ ALU proc
 	orm xmm3, xmm7,xmm3
 	jmp @end_switch
 	;1
-	xorpd xmm0, xmm0,xmm0
-	xorpd xmm1, xmm1,xmm1
-	xorpd xmm2, xmm2,xmm2
-	xorpd xmm3, xmm3,xmm3
+	xorpd xmm0, xmm0
+	xorpd xmm1, xmm1
+	xorpd xmm2, xmm2
+	xorpd xmm3, xmm3
 	;-------------------------
 	jmp @end_switch
 	;-(xUy)
@@ -472,10 +469,10 @@ ALU proc
 	jmp @end_switch
 
 	;0
-	xorm xmm0,xmm0
-	xorm xmm1,xmm1
-	xorm xmm2,xmm2
-	xorm xmm3,xmm3
+	xorm xmm0,xmm0,xmm0
+	xorm xmm1,xmm1,xmm1
+	xorm xmm2,xmm2,xmm2
+	xorm xmm3,xmm3,xmm3
 	jmp @end_switch
 	;x-y
 	notm xmm4, xmm4,xmm4
@@ -499,13 +496,13 @@ ALU proc
 	jmp @end_switch
 
 	;x-1
-	xor xmm4, xmm4
+	xorm xmm4, xmm4, xmm4
 	notm xmm4, xmm4 
-	xor xmm5, xmm5
+	xorm xmm5, xmm5, xmm5
 	notm xmm5, xmm5
-	xor xmm6, xmm6
+	xorm xmm6, xmm6, xmm6
 	notm xmm6, xmm6
-	xor xmm7, xmm7
+	xorm xmm7, xmm7, xmm7
 	notm xmm7, xmm7
 	mov rdx, rax
 	shl rdx, 5
@@ -528,10 +525,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;(xy)-1
@@ -568,10 +565,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;(x -y)-1
@@ -613,10 +610,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;-1-------------------------------------
@@ -660,10 +657,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;xy+(xU-y)
@@ -702,10 +699,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;(x-y)-1---------------------------------------
@@ -730,11 +727,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4, xmm4,xmm4
 	xorm xmm5, xmm5,xmm5
 	xorm xmm6, xmm6,xmm6
@@ -762,10 +759,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;xU_y
@@ -805,10 +802,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x+y
@@ -833,10 +830,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;(x_y)+(xUy)
@@ -874,10 +871,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm11
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;xUy
@@ -909,10 +906,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm3
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;xy+x
@@ -942,10 +939,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x_y+x
@@ -979,10 +976,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x
@@ -1046,11 +1043,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5, xmm5,xmm5
 	xorm xmm6, xmm6,xmm6
@@ -1078,10 +1075,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 
@@ -1119,11 +1116,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5, xmm5,xmm5
 	xorm xmm6, xmm6,xmm6
@@ -1151,10 +1148,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x-y---------------------------------------
@@ -1183,10 +1180,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;xU_y+x
@@ -1219,10 +1216,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 
@@ -1252,11 +1249,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4, xmm4, xmm4
 	xorm xmm5, xmm5, xmm5
 	xorm xmm6, xmm6, xmm6
@@ -1280,10 +1277,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x+y+1
@@ -1308,11 +1305,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5,xmm5,xmm5
 	xorm xmm6,xmm6,xmm6
@@ -1336,10 +1333,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;(x_y)+(xUy)+1
@@ -1377,11 +1374,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm11
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5,xmm5,xmm5
 	xorm xmm6,xmm6,xmm6
@@ -1405,10 +1402,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;xUy+1
@@ -1441,16 +1438,16 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm11
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x+x+1
 	movaps xmm8,xmm0
 	movaps xmm9,xmm1
-	mavaps xmm10, xmm2
+	movaps xmm10, xmm2
 	movaps xmm11, xmm3
 	mov rdx, rax
 	shl rdx, 5
@@ -1473,11 +1470,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm11
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5,xmm5,xmm5
 	xorm xmm6,xmm6,xmm6
@@ -1501,10 +1498,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 
@@ -1534,11 +1531,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5,xmm5,xmm5
 	xorm xmm6,xmm6,xmm6
@@ -1562,10 +1559,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x_y+x+1
@@ -1598,11 +1595,11 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
-
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
+	
 	xorm xmm4,xmm4,xmm4
 	xorm xmm5,xmm5,xmm5
 	xorm xmm6,xmm6,xmm6
@@ -1626,10 +1623,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	;x+1
@@ -1658,10 +1655,10 @@ ALU proc
 	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm16, xmm0
-	orm xmm13, xmm17, xmm1
-	orm xmm14, xmm18, xmm2
-	orm xmm15, xmm19, xmm3
+	orm xmm12, xmm0, xmm0
+	orm xmm13, xmm1, xmm1
+	orm xmm14, xmm2, xmm2
+	orm xmm15, xmm3, xmm3
 	jmp @end_switch
 
 	@end_switch:
@@ -1669,4 +1666,4 @@ ALU proc
 	ret
 ALU endp
 
-end _global
+_global endp

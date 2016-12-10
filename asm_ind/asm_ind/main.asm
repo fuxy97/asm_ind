@@ -53,7 +53,78 @@ main proc
 main endp
 
 fastCarry proc
+	push rbp
+	mov rbp, rsp
+	mov rax, [rbp + 16]
+	movlps xmm0, [rbp + 24]
+	movhps xmm0, [rbp + 32]
+	movlps xmm1, [rbp + 40]
+	movhps xmm1, [rbp + 48]
+	movlps xmm2, [rbp + 56]
+	movhps xmm2, [rbp + 64]
+	movlps xmm3, [rbp + 72]
+	movhps xmm3, [rbp + 80]
+	movlps xmm4, [rbp + 88]
+	movhps xmm4, [rbp + 96]
+	movlps xmm5, [rbp + 104]
+	movhps xmm5, [rbp + 112]
+	movlps xmm6, [rbp + 120]
+	movhps xmm6, [rbp + 128]
+	movlps xmm6, [rbp + 136]
+	movhps xmm6, [rbp + 144]
+	movlps xmm7, [rbp + 152]
+	movhps xmm7, [rbp + 160]
 	
+	;g
+	andm xmm0, xmm4, xmm8
+	andm xmm1, xmm5, xmm9
+	andm xmm2, xmm6, xmm10
+	andm xmm3, xmm7, xmm11
+	;p
+	orm xmm0, xmm4, xmm12
+	orm xmm1, xmm5, xmm13
+	orm xmm2, xmm6, xmm14
+	orm xmm3, xmm7, xmm15
+
+	movlpd rdx, xmm8
+	movlpd r11, xmm12
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movlpd xmm16, rax 
+	mov rax, r12
+
+	movhpd rdx, xmm8
+	movhpd r11, xmm12
+	lea r10, [rip]
+	add r10, 0x1
+	jmp @init_loop
+	movhpd xmm16, r12 
+	mov rax, r12
+
+	@init_loop:
+	mov rbx, 0x1
+	mov rcx, 63
+	@loop:
+		mov r12, r11
+		and r12, rax
+		or r12, rdx
+		and r12, rbx
+		shl r12, 1
+		or rax, r12
+		shl rbx, 1
+	loop @loop
+	mov r12, r11
+	and r12, rax
+	or r12, rdx
+	and r12, 80000000h
+	rcl r12, 1		
+
+	test r10, 0xFFFFFFFF
+	jne r10
+
+	pop rbp
+	ret
 fastCarry endp
 
 ALU proc

@@ -99,7 +99,7 @@ fastCarry proc
 	lea r10, [rip]
 	add r10, 0x1
 	jmp @init_loop
-	movhpd xmm16, r12 
+	movhpd xmm16, rax 
 	mov rax, r12
 
 	movlpd rdx, xmm9
@@ -115,7 +115,7 @@ fastCarry proc
 	lea r10, [rip]
 	add r10, 0x1
 	jmp @init_loop
-	movhpd xmm17, r12 
+	movhpd xmm17, rax 
 	mov rax, r12
 
 	movlpd rdx, xmm10
@@ -131,7 +131,7 @@ fastCarry proc
 	lea r10, [rip]
 	add r10, 0x1
 	jmp @init_loop
-	movhpd xmm18, r12 
+	movhpd xmm18, rax 
 	mov rax, r12
 
 	movlpd rdx, xmm11
@@ -144,10 +144,9 @@ fastCarry proc
 
 	movhpd rdx, xmm11
 	movhpd r11, xmm15
-	lea r10, [rip]
-	add r10, 0x1
+	mov r10, 0x0
 	jmp @init_loop
-	movhpd xmm19, r12 
+	movhpd xmm19, rax 
 	mov rax, r12
 
 	@init_loop:
@@ -418,6 +417,34 @@ ALU proc
 	jmp @end_switch
 	;x
 	;------------------------
+	jmp @end_switch
+	xor xmm4, xmm4
+	notm xmm4, xmm4 
+	mov rdx, rax
+	shl rdx, 5
+	push rdx
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm0
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm1
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm2
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm3
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm4
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm5
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm6
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm7
+	call fastCarry
+	add rsp, 136
+	orm xmm12, xmm16, xmm0
+	orm xmm13, xmm17, xmm1
+	orm xmm14, xmm18, xmm2
+	orm xmm15, xmm19, xmm3
 	jmp @end_switch
 
 	@end_switch:

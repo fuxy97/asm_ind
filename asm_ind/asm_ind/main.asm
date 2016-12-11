@@ -85,14 +85,14 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message1 
 	mov r8, 12
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 
@@ -108,14 +108,14 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message2
 	mov r8, 11
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 
@@ -131,7 +131,7 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message3
 	mov r8, 12
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
@@ -139,9 +139,9 @@ main proc
 	jg @error
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 
@@ -157,14 +157,14 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message4
 	mov r8, 12
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 
@@ -181,14 +181,14 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message5
 	mov r8, 12
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 
@@ -205,14 +205,14 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message6
 	mov r8, 12
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 
@@ -228,7 +228,7 @@ main proc
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message7
 	mov r8, 12
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
 
@@ -238,9 +238,9 @@ main proc
 	rep stosq
 
 	mov rcx, qword ptr [rbp - 16]
-	lea rdx, [rbp - 32]
+	lea rdx, [rbp - 48]
 	mov r8, 3
-	lea r9, [rbp - 40]
+	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
 

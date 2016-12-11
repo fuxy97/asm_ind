@@ -269,6 +269,7 @@ main proc
 	push [rbp - 56]
 	call ASCIIStringToXmm
 
+
 	;-------x1
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message8

@@ -56,6 +56,7 @@ endm
 	Message13 db "¬ведите y2: "
 	Message14 db "¬ведите y3: "
 	ErrorMessage1 db "ќшибка! ¬ведите значение 0 до 1.", 0Dh, 0Ah
+	ErrorMessage2 db "ќшибка! ¬ведите значение 0 до F (в 16 с/с).", 0Dh, 0Ah
 .code
 global proc 
 	call main
@@ -249,16 +250,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -293,16 +294,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -338,16 +339,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -383,16 +384,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -428,16 +429,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -473,16 +474,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -518,16 +519,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -563,16 +564,16 @@ main proc
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
 	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
 	cmp byte ptr [rbp + rdi - 48], 41h
-	jl @error
+	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
-	jg @error
+	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
@@ -582,13 +583,22 @@ main proc
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	movaps xmm7,xmm0
-
+	
 	jmp @end
 
 	@error:
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset ErrorMessage1
 	mov r8, 34
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+	jmp @end
+
+	@error1:
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, o-ffset ErrorMessage2
+	mov r8, 45
 	lea r9, [rbp - 40]
 	push 0
 	call WriteConsoleA

@@ -125,7 +125,7 @@ main proc
 	push 1
 	push [rbp - 32]
 	call ASCIIStringToRax
-	mov r10, rax
+	add r10, rax
 	shl r10, 1
 
 	mov rcx, qword ptr [rbp - 8]
@@ -151,7 +151,7 @@ main proc
 	push 1
 	push [rbp - 32]
 	call ASCIIStringToRax
-	mov r10, rax
+	add r10, rax
 	shl r10, 1
 
 	jmp @end

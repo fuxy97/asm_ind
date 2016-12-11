@@ -65,7 +65,7 @@ global endp
 main proc
 	push rbp
 	mov rbp, rsp
-	sub rsp, 56
+	sub rsp, 86
 
 	call AllocConsole
 
@@ -89,6 +89,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -96,6 +97,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -103,6 +105,7 @@ main proc
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
+	add rsp, 16
 	mov r12, rax
 	shl r12, 1
 	;-----M
@@ -112,6 +115,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -119,6 +123,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -126,6 +131,7 @@ main proc
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
+	add rsp, 16
 	or r12, rax
 	shl r12, 1
 	;----s0
@@ -135,6 +141,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -145,6 +152,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -152,6 +160,7 @@ main proc
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
+	add rsp, 16
 	or r12, rax
 	shl r12, 1
 	;-------s1
@@ -161,6 +170,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -168,6 +178,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -175,6 +186,7 @@ main proc
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
+	add rsp, 16
 	or r12, rax
 	shl r12, 1
 
@@ -185,6 +197,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -192,6 +205,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -199,6 +213,7 @@ main proc
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
+	add rsp, 16
 	or r12, rax
 	shl r12, 1
 
@@ -209,6 +224,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -216,6 +232,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
@@ -223,6 +240,7 @@ main proc
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
+	add rsp, 16
 	or r12, rax
 
 	;-------x0
@@ -232,6 +250,12 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
+
+	lea rdi, [rbp - 48]
+	xor rax, rax
+	mov rcx, 4
+	rep stosq
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -239,6 +263,8 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
+
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue11
@@ -265,9 +291,12 @@ main proc
 	inc rdi
 	loop @loop11
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm8,xmm13
 
 
@@ -278,6 +307,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -285,6 +315,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue12
@@ -314,6 +345,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm9,xmm13
 	
 	;-------x2
@@ -323,6 +355,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -330,6 +363,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue13
@@ -359,6 +393,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm10,xmm13
 
 		;-------x3
@@ -368,6 +403,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -375,6 +411,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue14
@@ -404,6 +441,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm11,xmm13
 
 	;-------y0
@@ -413,6 +451,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -420,6 +459,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue15
@@ -449,6 +489,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm12,xmm13
 
 	;-------y1
@@ -458,6 +499,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -465,6 +507,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue16
@@ -494,6 +537,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm14,xmm13
 
 	;-------y2
@@ -503,6 +547,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -510,6 +555,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue17
@@ -539,6 +585,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm6,xmm13
 
 	;-------y3
@@ -548,6 +595,7 @@ main proc
 	lea r9, [rbp - 56]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -555,6 +603,7 @@ main proc
 	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
+	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
 	jle @continue18
@@ -584,6 +633,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	add rsp, 16
 	movaps xmm7,xmm13
 
 	movaps xmm0,xmm8
@@ -602,6 +652,7 @@ main proc
 	lea r9, [rbp - 40]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 	jmp @end
 
 	@error1:
@@ -611,10 +662,12 @@ main proc
 	lea r9, [rbp - 40]
 	push 0
 	call WriteConsoleA
+	add rsp, 8
 
 	@end:
 	xor rcx, rcx
 	call ExitProcess
+	add rsp, 86
 	pop rbp
 	ret
 main endp
@@ -626,9 +679,11 @@ ASCIIStringToXmm proc
 	;movdqu xmm1, xmmword ptr [rbp + 16]
 	;movdqu xmm2, xmmword ptr [rbp + 32]
 	xorpd xmm13, xmm13
+	cld
 
+	add rcx, 1
 	shr rcx, 1
-	lea rsi, byte ptr [rbp + 24]
+	mov rsi, [rbp + 24]
 	@loop128:
 	xor dl, dl
 	lodsb
@@ -640,6 +695,16 @@ ASCIIStringToXmm proc
 	pinsrb xmm13, edx, 0h
 	loop @loop128
 
+	test qword ptr [rbp + 16], 1h
+	jz @exitASCIIStringToXmm
+	pshufd xmm15, xmm13, 4eh
+	psrlq xmm13, 4
+	psllq xmm15, 60
+	pinsrb xmm15, rcx, 15
+	por xmm13, xmm15
+	;psrldq xmm13, 1
+
+	@exitASCIIStringToXmm:
 	pop rbp
 	ret
 ASCIIStringToXmm endp

@@ -241,9 +241,9 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue11
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue11:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
@@ -252,22 +252,23 @@ main proc
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue31
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue21
+	@continue31:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue21:
 	inc rdi
 	loop @loop11
 
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	movaps xmm8,xmm0
 
 
 	;-------x1
@@ -286,29 +287,29 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue12
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue12:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop12:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue32
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue22
+	@continue32:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue22:
 	inc rdi
-	loop @loop11
+	loop @loop12
 
 	push [rbp - 48]
 	push [rbp - 56]
@@ -331,29 +332,29 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue13
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue13:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop13:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue33
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue23
+	@continue33:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue23:
 	inc rdi
-	loop @loop11
+	loop @loop13
 
 	push [rbp - 48]
 	push [rbp - 56]
@@ -376,29 +377,29 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue14
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue14:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop14:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue34
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue24
+	@continue34:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue24:
 	inc rdi
-	loop @loop11
+	loop @loop14
 
 	push [rbp - 48]
 	push [rbp - 56]
@@ -421,29 +422,29 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue15
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue15:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop15:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue35
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue25
+	@continue35:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue25:
 	inc rdi
-	loop @loop11
+	loop @loop15
 
 	push [rbp - 48]
 	push [rbp - 56]
@@ -466,29 +467,29 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue16
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue16:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop16:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue36
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue26
+	@continue36:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue26:
 	inc rdi
-	loop @loop11
+	loop @loop16
 
 	push [rbp - 48]
 	push [rbp - 56]
@@ -511,29 +512,29 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue17
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue17:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop17:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue37
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue27
+	@continue37:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue27:
 	inc rdi
-	loop @loop11
+	loop @loop17
 
 	push [rbp - 48]
 	push [rbp - 56]
@@ -556,35 +557,35 @@ main proc
 	call ReadConsoleA
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue1
+	jle @continue18
 	mov qword ptr [rbp - 56], 32
-	@continue1:
+	@continue18:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
-	@loop11:
+	@loop18:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
 	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 39h
-	jg @continue3
+	jg @continue38
 	sub byte ptr [rbp + rdi - 48], 30h
-	jmp @continue2
-	@continue3:
+	jmp @continue28
+	@continue38:
 	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error1
 	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error1
 	sub byte ptr [rbp + rdi - 48], 37h
-	@continue2:
+	@continue28:
 	inc rdi
-	loop @loop11
+	loop @loop18
 
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	movaps xmm7,xmm0
-	
+	movaps xmm0,xmm8
 	jmp @end
 
 	@error:
@@ -598,7 +599,7 @@ main proc
 
 	@error1:
 	mov rcx, qword ptr [rbp - 8]
-	mov rdx, o-ffset ErrorMessage2
+	mov rdx, offset ErrorMessage2
 	mov r8, 45
 	lea r9, [rbp - 40]
 	push 0

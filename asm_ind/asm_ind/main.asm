@@ -81,7 +81,7 @@ main proc
 	mov rcx, STD_INPUT_HANDLE
 	call GetStdHandle
 	mov [rbp - 16], rax
-
+	;----c0
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message1 
 	mov r8, 12
@@ -104,7 +104,7 @@ main proc
 	call ASCIIStringToRax
 	mov r10, rax
 	shl r10, 1
-
+	;-----M
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message2
 	mov r8, 11
@@ -127,7 +127,7 @@ main proc
 	call ASCIIStringToRax
 	add r10, rax
 	shl r10, 1
-
+	;----s0
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message3
 	mov r8, 12
@@ -137,6 +137,101 @@ main proc
 
 	cmp byte ptr [rbp - 32], 31h
 	jg @error
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	add r10, rax
+	shl r10, 1
+	;-------s1
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message4
+	mov r8, 12
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	add r10, rax
+	shl r10, 1
+
+	;-------s2
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message5
+	mov r8, 12
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	add r10, rax
+	shl r10, 1
+
+	;-------s3
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message6
+	mov r8, 12
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	add r10, rax
+	shl r10, 1
+
+	;-------x0
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message7
+	mov r8, 12
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 32]

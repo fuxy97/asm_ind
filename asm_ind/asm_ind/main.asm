@@ -232,10 +232,49 @@ main proc
 	push 0
 	call WriteConsoleA
 
-	;mov rcx, 2
-	;xor rax, rax
-	;lea rdi, qword ptr [rbp - 32]
-	;rep stosq
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+
+	;-------x1
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message8
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
@@ -272,7 +311,278 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
+	movaps xmm1,xmm0
 	
+	;-------x2
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message9
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+	movaps xmm2,xmm0
+
+		;-------x3
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message10
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+	movaps xmm3,xmm0
+
+	;-------y0
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message11
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+	movaps xmm4,xmm0
+
+	;-------y1
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message12
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+	movaps xmm5,xmm0
+
+	;-------y2
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message13
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+	movaps xmm6,xmm0
+
+	;-------y3
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message14
+	mov r8, 12
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
+	push 0
+	call ReadConsoleA
+
+	cmp qword ptr [rbp - 56], 32
+	jle @continue1
+	mov qword ptr [rbp - 56], 32
+	@continue1:
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 48], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 48], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 48], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 48], 46h
+	jg @error
+	sub byte ptr [rbp + rdi - 48], 37h
+	@continue2:
+	inc rdi
+	loop @loop11
+
+	push [rbp - 48]
+	push [rbp - 56]
+	call ASCIIStringToXmm
+	movaps xmm7,xmm0
+
 	jmp @end
 
 	@error:

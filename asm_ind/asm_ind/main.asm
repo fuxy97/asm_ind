@@ -1,3 +1,14 @@
+STD_OUTPUT_HANDLE equ -11
+STD_INPUT_HANDLE equ -10
+
+extrn AllocConsole:proc
+extrn GetStdHandle:proc
+extrn WriteConsoleA:proc
+extrn ReadConsoleA:proc
+extrn ExitProcess:proc
+extrn SetConsoleCP:proc
+extrn SetConsoleOutputCP:proc
+
 andm macro x, y, z
 	 movapd z, x
 	 andpd z, y
@@ -30,8 +41,21 @@ ornm macro x, y, z
 endm
 
 .data
-	;t1 db ?
-
+	Message1 db "¬ведите c0: "
+	Message2 db "¬ведите M: "
+	Message3 db "¬ведите s0: "
+	Message4 db "¬ведите s1: "
+	Message5 db "¬ведите s2: "
+	Message6 db "¬ведите s3: "
+	Message7 db "¬ведите x0: "
+	Message8 db "¬ведите x1: "
+	Message9 db "¬ведите x2: "
+	Message10 db "¬ведите x3: "
+	Message11 db "¬ведите y0: "
+	Message12 db "¬ведите y1: "
+	Message13 db "¬ведите y2: "
+	Message14 db "¬ведите y3: "
+	ErrorMessage1 db "ќшибка! ¬ведите значение 0 до 1.", 0Dh, 0Ah
 .code
 global proc 
 	call main
@@ -40,10 +64,135 @@ global endp
 main proc
 	push rbp
 	mov rbp, rsp
+	sub rsp, 40
 
+	call AllocConsole
+
+	mov rcx, 1251
+	call SetConsoleCP
+
+	mov rcx, 1251
+	call SetConsoleOutputCP
+
+	mov rcx, STD_OUTPUT_HANDLE
+	call GetStdHandle
+	mov [rbp - 8], rax
+
+	mov rcx, STD_INPUT_HANDLE
+	call GetStdHandle
+	mov [rbp - 16], rax
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message1 
+	mov r8, 12
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	mov r10, rax
+	shl r10, 1
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message2
+	mov r8, 11
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	mov r10, rax
+	shl r10, 1
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message3
+	mov r8, 12
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	mov rcx, qword ptr [rbp - 16]
+	lea rdx, [rbp - 32]
+	mov r8, 3
+	lea r9, [rbp - 40]
+	push 0
+	call ReadConsoleA
+
+	cmp byte ptr [rbp - 32], 31h
+	jg @error
+
+	push 1
+	push [rbp - 32]
+	call ASCIIStringToRax
+	mov r10, rax
+	shl r10, 1
+
+	jmp @end
+
+	@error:
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset ErrorMessage1
+	mov r8, 34
+	lea r9, [rbp - 40]
+	push 0
+	call WriteConsoleA
+
+	@end:
+	xor rcx, rcx
+	call ExitProcess
 	pop rbp
 	ret
 main endp
+
+ASCIIStringToRax proc
+	push rbp
+	mov rbp, rsp
+	lea rbx, [rbp + 16]
+	mov rcx, [rbp + 24]
+	xor rax, rax
+
+	cmp rcx, 64
+	jg @exit1
+
+	xor rdi, rdi
+	@loop10:
+	mov al, byte ptr [rbx + rdi]
+	sub al, 30h
+	rcl rax, 8
+	inc rdi
+	loop @loop10
+	rcr rax, 8
+	@exit1:
+	pop rbp
+	ret
+ASCIIStringToRax endp
 
 fastCarry proc
 	push rbp
@@ -1681,4 +1830,4 @@ ALU proc
 	ret
 ALU endp
 
-end global
+end

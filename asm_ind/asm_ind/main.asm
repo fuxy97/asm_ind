@@ -232,44 +232,45 @@ main proc
 	push 0
 	call WriteConsoleA
 
-	mov rcx, 2
-	xor rax, rax
-	lea rdi, qword ptr [rbp - 32]
-	rep stosq
+	;mov rcx, 2
+	;xor rax, rax
+	;lea rdi, qword ptr [rbp - 32]
+	;rep stosq
 
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
-	mov r8, 3
-	lea r9, [rbp - 56]
+	mov r8, 32
+	lea r9, qword ptr [rbp - 56]
 	push 0
 	call ReadConsoleA
 
-	cmp qword ptr [rbp - 40], 32
+	cmp qword ptr [rbp - 56], 32
 	jle @continue1
-	mov qword ptr [rbp - 40], 32
+	mov qword ptr [rbp - 56], 32
 	@continue1:
-	mov rcx, qword ptr [rbp - 40] 
+	sub qword ptr [rbp - 56], 2
+	mov rcx, qword ptr [rbp - 56] 
 	xor rdi, rdi
 	@loop11:
 	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
-	cmp byte ptr [rbp + rdi - 32], 30h
+	cmp byte ptr [rbp + rdi - 48], 30h
 	jl @error
-	cmp byte ptr [rbp + rdi - 32], 39h
+	cmp byte ptr [rbp + rdi - 48], 39h
 	jg @continue3
-	sub byte ptr [rbp + rdi - 32], 30h
+	sub byte ptr [rbp + rdi - 48], 30h
 	jmp @continue2
 	@continue3:
-	cmp byte ptr [rbp + rdi - 32], 41h
+	cmp byte ptr [rbp + rdi - 48], 41h
 	jl @error
-	cmp byte ptr [rbp + rdi - 32], 46h
+	cmp byte ptr [rbp + rdi - 48], 46h
 	jg @error
-	sub byte ptr [rbp + rdi - 32], 41h
+	sub byte ptr [rbp + rdi - 48], 37h
 	@continue2:
 	inc rdi
 	loop @loop11
 
-	push [rbp - 56]
 	push [rbp - 48]
+	push [rbp - 56]
 	call ASCIIStringToXmm
 	
 	jmp @end
@@ -292,21 +293,21 @@ main endp
 ASCIIStringToXmm proc
 	push rbp
 	mov rbp, rsp
-	mov rcx, [ebp + 16]
+	mov rcx, [rbp + 16]
 	;movdqu xmm1, xmmword ptr [rbp + 16]
 	;movdqu xmm2, xmmword ptr [rbp + 32]
 	xorpd xmm0, xmm0
 
-	shr rcx, 2
-	lea si, byte ptr [rbp + 24]
+	shr rcx, 1
+	lea rsi, byte ptr [rbp + 24]
 	@loop12:
 	xor dl, dl
 	lodsb
-	or dl, al
-	lodsb
 	shl al, 4
 	or dl, al
-	pslldq xmm0, 8
+	lodsb
+	or dl, al
+	pslldq xmm0, 1
 	pinsrb xmm0, edx, 0h
 	loop @loop12
 

@@ -97,14 +97,14 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	push 1
-	push [rbp - 32]
+	push [rbp - 48]
 	call ASCIIStringToRax
-	mov r10, rax
-	shl r10, 1
+	mov r12, rax
+	shl r12, 1
 	;-----M
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message2
@@ -120,14 +120,14 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	push 1
-	push [rbp - 32]
+	push [rbp - 48]
 	call ASCIIStringToRax
-	add r10, rax
-	shl r10, 1
+	or r12, rax
+	shl r12, 1
 	;----s0
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message3
@@ -136,7 +136,7 @@ main proc
 	push 0
 	call WriteConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	mov rcx, qword ptr [rbp - 16]
@@ -146,14 +146,14 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	push 1
-	push [rbp - 32]
+	push [rbp - 48]
 	call ASCIIStringToRax
-	add r10, rax
-	shl r10, 1
+	or r12, rax
+	shl r12, 1
 	;-------s1
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message4
@@ -169,14 +169,14 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	push 1
-	push [rbp - 32]
+	push [rbp - 48]
 	call ASCIIStringToRax
-	add r10, rax
-	shl r10, 1
+	or r12, rax
+	shl r12, 1
 
 	;-------s2
 	mov rcx, qword ptr [rbp - 8]
@@ -193,14 +193,14 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	push 1
-	push [rbp - 32]
+	push [rbp - 48]
 	call ASCIIStringToRax
-	add r10, rax
-	shl r10, 1
+	or r12, rax
+	shl r12, 1
 
 	;-------s3
 	mov rcx, qword ptr [rbp - 8]
@@ -217,13 +217,13 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp byte ptr [rbp - 48], 31h
 	jg @error
 
 	push 1
-	push [rbp - 32]
+	push [rbp - 48]
 	call ASCIIStringToRax
-	add r10, rax
+	or r12, rax
 
 	;-------x0
 	mov rcx, qword ptr [rbp - 8]
@@ -268,7 +268,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm8,xmm0
+	movaps xmm8,xmm13
 
 	;-------x1
 	mov rcx, qword ptr [rbp - 8]
@@ -313,7 +313,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm1,xmm0
+	movaps xmm9,xmm13
 	
 	;-------x2
 	mov rcx, qword ptr [rbp - 8]
@@ -358,9 +358,9 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm2,xmm0
+	movaps xmm10,xmm13
 
-		;-------x3
+	;-------x3
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message10
 	mov r8, 12
@@ -403,7 +403,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm3,xmm0
+	movaps xmm11,xmm13
 
 	;-------y0
 	mov rcx, qword ptr [rbp - 8]
@@ -448,7 +448,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm4,xmm0
+	movaps xmm12,xmm13
 
 	;-------y1
 	mov rcx, qword ptr [rbp - 8]
@@ -493,7 +493,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm5,xmm0
+	movaps xmm14,xmm13
 
 	;-------y2
 	mov rcx, qword ptr [rbp - 8]
@@ -538,7 +538,7 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm6,xmm0
+	movaps xmm6,xmm13
 
 	;-------y3
 	mov rcx, qword ptr [rbp - 8]
@@ -583,8 +583,15 @@ main proc
 	push [rbp - 48]
 	push [rbp - 56]
 	call ASCIIStringToXmm
-	movaps xmm7,xmm0
+	movaps xmm7,xmm13
+
 	movaps xmm0,xmm8
+	movaps xmm1,xmm9
+	movaps xmm2,xmm10
+	movaps xmm3,xmm11
+	movaps xmm4,xmm12
+	movaps xmm5,xmm14
+	
 	jmp @end
 
 	@error:
@@ -617,20 +624,20 @@ ASCIIStringToXmm proc
 	mov rcx, [rbp + 16]
 	;movdqu xmm1, xmmword ptr [rbp + 16]
 	;movdqu xmm2, xmmword ptr [rbp + 32]
-	xorpd xmm0, xmm0
+	xorpd xmm13, xmm13
 
 	shr rcx, 1
 	lea rsi, byte ptr [rbp + 24]
-	@loop12:
+	@loop128:
 	xor dl, dl
 	lodsb
 	shl al, 4
 	or dl, al
 	lodsb
 	or dl, al
-	pslldq xmm0, 1
-	pinsrb xmm0, edx, 0h
-	loop @loop12
+	pslldq xmm13, 1
+	pinsrb xmm13, edx, 0h
+	loop @loop128
 
 	pop rbp
 	ret

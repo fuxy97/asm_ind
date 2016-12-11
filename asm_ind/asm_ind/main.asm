@@ -64,7 +64,7 @@ global endp
 main proc
 	push rbp
 	mov rbp, rsp
-	sub rsp, 40
+	sub rsp, 56
 
 	call AllocConsole
 
@@ -223,7 +223,6 @@ main proc
 	push [rbp - 32]
 	call ASCIIStringToRax
 	add r10, rax
-	shl r10, 1
 
 	;-------x0
 	mov rcx, qword ptr [rbp - 8]
@@ -233,6 +232,11 @@ main proc
 	push 0
 	call WriteConsoleA
 
+	mov rcx, 2
+	xor rax, rax
+	lea rdi, qword ptr [rbp - 32]
+	rep stosq
+
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 32]
 	mov r8, 3
@@ -240,15 +244,34 @@ main proc
 	push 0
 	call ReadConsoleA
 
-	cmp byte ptr [rbp - 32], 31h
+	cmp qword ptr [rbp - 40], 32
+	jle @continue1
+	mov qword ptr [rbp - 40], 32
+	@continue1:
+	mov rcx, qword ptr [rbp - 40] 
+	xor rdi, rdi
+	@loop11:
+	;s[rdi] >= 0x30 && s[rdi] <= 0x39 || s[rdi] >= 0x41 && s[rdi] <= 0x46
+	cmp byte ptr [rbp + rdi - 32], 30h
+	jl @error
+	cmp byte ptr [rbp + rdi - 32], 39h
+	jg @continue3
+	sub byte ptr [rbp + rdi - 32], 30h
+	jmp @continue2
+	@continue3:
+	cmp byte ptr [rbp + rdi - 32], 41h
+	jl @error
+	cmp byte ptr [rbp + rdi - 32], 46h
 	jg @error
+	sub byte ptr [rbp + rdi - 32], 41h
+	@continue2:
+	inc rdi
+	loop @loop11
 
-	push 1
-	push [rbp - 32]
-	call ASCIIStringToRax
-	add r10, rax
-	shl r10, 1
-
+	push [rbp - 56]
+	push [rbp - 48]
+	call ASCIIStringToXmm
+	
 	jmp @end
 
 	@error:
@@ -265,6 +288,31 @@ main proc
 	pop rbp
 	ret
 main endp
+
+ASCIIStringToXmm proc
+	push rbp
+	mov rbp, rsp
+	mov rcx, [ebp + 16]
+	;movdqu xmm1, xmmword ptr [rbp + 16]
+	;movdqu xmm2, xmmword ptr [rbp + 32]
+	xorpd xmm0, xmm0
+
+	shr rcx, 2
+	lea si, byte ptr [rbp + 24]
+	@loop12:
+	xor dl, dl
+	lodsb
+	or dl, al
+	lodsb
+	shl al, 4
+	or dl, al
+	pslldq xmm0, 8
+	pinsrb xmm0, edx, 0h
+	loop @loop12
+
+	pop rbp
+	ret
+ASCIIStringToXmm endp
 
 ASCIIStringToRax proc
 	push rbp

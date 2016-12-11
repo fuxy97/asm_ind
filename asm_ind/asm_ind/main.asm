@@ -270,6 +270,7 @@ main proc
 	call ASCIIStringToXmm
 	movaps xmm8,xmm13
 
+
 	;-------x1
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message8
@@ -360,7 +361,7 @@ main proc
 	call ASCIIStringToXmm
 	movaps xmm10,xmm13
 
-	;-------x3
+		;-------x3
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message10
 	mov r8, 12

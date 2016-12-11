@@ -299,7 +299,6 @@ main proc
 	add rsp, 16
 	movaps xmm8,xmm13
 
-
 	;-------x1
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message8
@@ -342,7 +341,9 @@ main proc
 	inc rdi
 	loop @loop12
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16
@@ -390,7 +391,9 @@ main proc
 	inc rdi
 	loop @loop13
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16
@@ -438,7 +441,9 @@ main proc
 	inc rdi
 	loop @loop14
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16
@@ -486,7 +491,9 @@ main proc
 	inc rdi
 	loop @loop15
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16
@@ -534,7 +541,9 @@ main proc
 	inc rdi
 	loop @loop16
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16
@@ -582,7 +591,9 @@ main proc
 	inc rdi
 	loop @loop17
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16
@@ -630,7 +641,9 @@ main proc
 	inc rdi
 	loop @loop18
 
-	push [rbp - 48]
+	mov rbx, rbp
+	sub rbx, 48
+	push rbx
 	push [rbp - 56]
 	call ASCIIStringToXmm
 	add rsp, 16

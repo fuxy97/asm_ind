@@ -10,7 +10,7 @@ extrn SetConsoleCP:proc
 extrn SetConsoleOutputCP:proc
 
 andm macro x, y, z
-	 movapd z, x
+	 movaps z, x
 	 andpd z, y
 endm
 
@@ -30,8 +30,9 @@ nandm macro x, y, z
 endm
 
 notm macro x, y
-	movapd y, x
-	andnpd y, y
+	pcmpeqb xmm15,xmm15
+	xorpd xmm15,x
+	movaps y,xmm15
 endm
 
 ornm macro x, y, z
@@ -650,14 +651,14 @@ main proc
 	movaps xmm7,xmm13
 
 	sub rsp, 128
-	movdqu xmmword ptr [rsp], xmm7
-	movdqu xmmword ptr [rsp + 16], xmm6
-	movdqu xmmword ptr [rsp + 32], xmm14
-	movdqu xmmword ptr [rsp + 48], xmm12
-	movdqu xmmword ptr [rsp + 64], xmm11
-	movdqu xmmword ptr [rsp + 80], xmm10
-	movdqu xmmword ptr [rsp + 96], xmm9
-	movdqu xmmword ptr [rsp + 112], xmm8
+	movdqu xmmword ptr [rsp+112], xmm7
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 80], xmm14
+	movdqu xmmword ptr [rsp + 64], xmm12
+	movdqu xmmword ptr [rsp + 48], xmm11
+	movdqu xmmword ptr [rsp + 32], xmm10
+	movdqu xmmword ptr [rsp + 16], xmm9
+	movdqu xmmword ptr [rsp], xmm8
 	push r12
 	call ALU
 	add rsp, 136
@@ -997,41 +998,39 @@ ALU proc
 	and rax, 1Fh
 	@continue:
 	
-	;c=0 M=1
+	;M=1
 	cmp rax, 10h	
 	je @switch
-	cmp rax, 11h
-	je @switch + 6
-	cmp rax, 12h
-	je @switch + 12
-	cmp rax, 13h
-	je @switch + 18
-	cmp rax, 14h
-	je @switch + 24
-	cmp rax, 15h
-	je @switch + 32
-	cmp rax, 16h
-	je @switch + 40
-	cmp rax, 17h
-	je @switch + 48
 	cmp rax, 18h
-	je @switch + 56
-	cmp rax, 19h
-	je @switch + 64
-	cmp rax, 1Ah
-	je @switch + 72
-	cmp rax, 1Bh
-	je @switch + 80
+	je @switch+3Dh
+	cmp rax, 14h
+	je @switch + 96h
 	cmp rax, 1Ch
-	je @switch + 88
-	cmp rax, 1Dh
-	je @switch + 96
+	je @switch + 0F3h
+	cmp rax, 12h
+	je @switch + 11Bh
+	cmp rax, 1Ah
+	je @switch + 178h
+	cmp rax, 16h
+	je @switch + 1B5h
 	cmp rax, 1Eh
-	je @switch + 104
+	je @switch + 20Ah
+	cmp rax, 11h
+	je @switch + 267h
+	cmp rax, 19h
+	je @switch + 2C0h
+	cmp rax, 15h
+	je @switch + 2DDh
+	cmp rax, 1Dh
+	je @switch + 2EEh
+	cmp rax, 13h
+	je @switch + 313h
+	cmp rax, 1Bh
+	je @switch + 330h
+	cmp rax, 17h
+	je @switch + 389h
 	cmp rax, 1Fh
-	je @switch + 112
-	cmp rax, 1Fh
-	je @switch + 112
+	je @switch + 3AAh
 
 	;c=0 M=0
 	cmp rax, 0h	
@@ -1102,19 +1101,23 @@ ALU proc
 	je @switch + 112
 
 	@switch:
-	;-x
+	;_x
 	notm xmm0, xmm0
 	notm xmm1, xmm1
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
-	;-(xy)
-	andnpd xmm0, xmm4
-	andnpd xmm1, xmm5
-	andnpd xmm2, xmm6
-	andnpd xmm3, xmm7
+	;_(xy)
+	andm xmm0, xmm4,xmm0
+	andm xmm1, xmm5,xmm1
+	andm xmm2, xmm6,xmm2
+	andm xmm3, xmm7,xmm3
+	notm xmm0,xmm0
+	notm xmm1,xmm1
+	notm xmm2,xmm2
+	notm xmm3,xmm3
 	jmp @end_switch
-	;-xUy
+	;_xUy
 	notm xmm0, xmm0
 	notm xmm1, xmm1
 	notm xmm2, xmm2
@@ -1125,13 +1128,15 @@ ALU proc
 	orm xmm3, xmm7,xmm3
 	jmp @end_switch
 	;1
-	xorpd xmm0, xmm0
-	xorpd xmm1, xmm1
-	xorpd xmm2, xmm2
-	xorpd xmm3, xmm3
+	xorm xmm0, xmm0,xmm0
+	xorm xmm1, xmm1,xmm1
+	xorm xmm2, xmm2,xmm2
+	xorm xmm3, xmm3,xmm3
+	mov edx, 0001h
+	pinsrb xmm3, edx, 0h
 	;-------------------------
 	jmp @end_switch
-	;-(xUy)
+	;_(xUy)
 	orm xmm0, xmm4,xmm0
 	orm xmm1, xmm5,xmm1
 	orm xmm2, xmm6,xmm2
@@ -1141,13 +1146,13 @@ ALU proc
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
-	;-y
-	notm xmm4, xmm4
-	notm xmm5, xmm5
-	notm xmm5, xmm6
-	notm xmm6, xmm7
+	;_y
+	notm xmm4, xmm0
+	notm xmm5, xmm1
+	notm xmm5, xmm2
+	notm xmm6, xmm3
 	jmp @end_switch
-	;-(x+y)
+	;_(x|+|y)
 	xorm xmm0, xmm4,xmm0
 	xorm xmm1, xmm5,xmm1
 	xorm xmm2, xmm6,xmm2
@@ -1157,7 +1162,7 @@ ALU proc
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
-	;xU-y
+	;xU_y
 	notm xmm4, xmm4
 	notm xmm5, xmm5
 	notm xmm6, xmm6
@@ -1167,17 +1172,17 @@ ALU proc
 	orm xmm2, xmm6,xmm2
 	orm xmm3, xmm7,xmm3
 	jmp @end_switch
-	;-xy
-	notm xmm0, xmm0,xmm0
-	notm xmm1, xmm1,xmm1
-	notm xmm2, xmm2,xmm2
-	notm xmm3, xmm3,xmm3
-	andm xmm0, xmm4,xmm0
-	andm xmm1, xmm5,xmm1
-	andm xmm2, xmm6,xmm2
-	andm xmm3, xmm7,xmm3
+	;_xy
+	notm xmm0,xmm0
+	notm xmm1,xmm1
+	notm xmm2,xmm2
+	notm xmm3,xmm3
+	andm xmm0,xmm4,xmm0
+	andm xmm1,xmm5,xmm1
+	andm xmm2,xmm6,xmm2
+	andm xmm3,xmm7,xmm3
 	jmp @end_switch
-	;x+y
+	;x|+|y
 	xorm xmm0, xmm4,xmm0
 	xorm xmm1, xmm5,xmm1
 	xorm xmm2, xmm6,xmm2
@@ -1195,14 +1200,13 @@ ALU proc
 	orm xmm2, xmm6, xmm2
 	orm xmm3, xmm7, xmm3
 	jmp @end_switch
-
 	;0
 	xorm xmm0,xmm0,xmm0
 	xorm xmm1,xmm1,xmm1
 	xorm xmm2,xmm2,xmm2
 	xorm xmm3,xmm3,xmm3
 	jmp @end_switch
-	;x-y
+	;x_y
 	notm xmm4, xmm4,xmm4
 	notm xmm5, xmm5,xmm5
 	notm xmm6, xmm6,xmm6
@@ -1212,14 +1216,12 @@ ALU proc
 	andm xmm2, xmm6,xmm2
 	andm xmm3, xmm7,xmm3
 	jmp @end_switch
-
 	;xy
 	andm xmm0, xmm4,xmm0
 	andm xmm1, xmm5,xmm1
 	andm xmm2, xmm6,xmm2
 	andm xmm3, xmm7,xmm3
 	jmp @end_switch
-
 	;x
 	jmp @end_switch
 

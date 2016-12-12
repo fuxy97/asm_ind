@@ -1034,7 +1034,7 @@ ALU proc
 
 	;c=0 M=0
 	cmp rax, 0h	
-	je @switch
+	je @switch+3AFh
 	cmp rax, 8h
 	je @switch + 118
 	cmp rax, 4h
@@ -1226,14 +1226,10 @@ ALU proc
 	jmp @end_switch
 
 	;x-1
-	xorm xmm4, xmm4, xmm4
-	notm xmm4, xmm4 
-	xorm xmm5, xmm5, xmm5
-	notm xmm5, xmm5
-	xorm xmm6, xmm6, xmm6
-	notm xmm6, xmm6
-	xorm xmm7, xmm7, xmm7
-	notm xmm7, xmm7
+	xorm xmm4,xmm4,xmm4
+	xorm xmm5,xmm5,xmm5
+	xorm xmm6,xmm6,xmm6
+	xorm xmm7,xmm7,xmm7
 	mov rdx, rax
 	shl rdx, 5
 	push rdx

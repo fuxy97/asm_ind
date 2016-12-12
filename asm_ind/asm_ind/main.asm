@@ -24,6 +24,12 @@ xorm macro x, y, res
 	 xorps res, y
 endm
 
+xorrm macro x, y, res
+	movaps xmm4, x
+	xorps xmm4, y
+	movaps res, xmm4
+endm
+
 nandm macro x, y, z
 	 movapd z, x
 	 andnpd z, y
@@ -58,6 +64,7 @@ endm
 	Message14 db "¬ведите y3: "
 	ErrorMessage1 db "ќшибка! ¬ведите значение 0 до 1.", 0Dh, 0Ah
 	ErrorMessage2 db "ќшибка! ¬ведите значение 0 до F (в 16 с/с).", 0Dh, 0Ah
+	;significantBit xmmword 80000000000000000000000000000000h
 .code
 global proc 
 	call main
@@ -418,8 +425,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue14
-	mov qword ptr [rbp - 56], 32
+	jne @continue14
+	mov qword ptr [rbp - 56], 34
 	@continue14:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -762,6 +769,7 @@ ASCIIStringToRax endp
 fastCarry proc
 	push rbp
 	mov rbp, rsp
+
 	mov rax, [rbp + 16]
 	movdqu xmm0, xmmword ptr [rbp + 24]
 	movdqu xmm1, xmmword ptr [rbp + 40]
@@ -778,10 +786,10 @@ fastCarry proc
 	andm xmm2, xmm6, xmm10
 	andm xmm3, xmm7, xmm11
 	;p
-	orm xmm0, xmm4, xmm12
-	orm xmm1, xmm5, xmm13
-	orm xmm2, xmm6, xmm14
-	orm xmm3, xmm7, xmm15
+	xorm xmm0, xmm4, xmm12
+	xorm xmm1, xmm5, xmm13
+	xorm xmm2, xmm6, xmm14
+	xorm xmm3, xmm7, xmm15
 
 	movd rdx, xmm8
 	movd r11, xmm12
@@ -789,25 +797,25 @@ fastCarry proc
 	@dummy1:
 	pop r10
 	;lea r10, [rip]
-	inc rax
+	add r10, 0Bh
 	jmp @init_loop
 	pinsrq xmm0, rax, 0h
-	mov rax, r12
+	mov rax, r11
 	
 	;movhpd xmm4, xmm8
-	pextrq rdx, xmm4, 1h
+	pextrq rdx, xmm8, 1h
 	;movd rdx, xmm4
 	;movhpd xmm4, xmm12
-	pextrq r11, xmm4, 1h
+	pextrq r11, xmm12, 1h
 	;movd r11, xmm4
 	call @dummy2
 	@dummy2:
 	pop r10
 	;lea r10, [rip]
-	inc r10
+	add r10, 0Bh
 	jmp @init_loop
 	pinsrq xmm0, rax, 1h 
-	mov rax, r12
+	mov rax, r11
 
 	movd rdx, xmm9
 	movd r11, xmm13
@@ -815,27 +823,27 @@ fastCarry proc
 	@dummy3:
 	pop r10
 	;lea r10, [rip]
-	inc r10
+	add r10, 0Bh
 	jmp @init_loop
 	pinsrq xmm1, rax, 0h
 	;movlpd xmm1, rax 
-	mov rax, r12
+	mov rax, r11
 
 	;movhpd xmm4, xmm9
-	pextrq rdx, xmm4, 1h
+	pextrq rdx, xmm9, 1h
 	;movd rdx, xmm4
 	;movhpd xmm4, xmm13
-	pextrq rdx, xmm4, 1h
+	pextrq r11, xmm13, 1h
 	;movd r11, xmm4
 	call @dummy4
 	@dummy4:
 	pop r10
 	;lea r10, [rip]
-	inc r10
+	add r10, 0Bh
 	jmp @init_loop
 	;movhpd xmm1, rax 
 	pinsrq xmm1, rax, 1h
-	mov rax, r12
+	mov rax, r11
 
 	movd rdx, xmm10
 	movd r11, xmm14
@@ -843,28 +851,28 @@ fastCarry proc
 	@dummy5:
 	pop r10
 	;lea r10, [rip]
-	inc r10
+	add r10, 08h
 	jmp @init_loop
 	;movlpd xmm2, rax 
 	pinsrq xmm2, rax, 0h
-	mov rax, r12
+	mov rax, r11
 
 
 	;movhpd xmm4, xmm10
 	;movd rdx, xmm4
-	pextrq rdx, xmm4, 1h
+	pextrq rdx, xmm10, 1h
 	;movhpd xmm4, xmm14
 	;movd r11, xmm4
-	pextrq r11, xmm4, 1h
+	pextrq r11, xmm14, 1h
 	call @dummy6
 	@dummy6:
 	pop r10
 	;lea r10, [rip]
-	inc r10
+	add r10, 08h
 	jmp @init_loop
 	pinsrq xmm2, rax, 1h
 	;movhpd xmm2, rax 
-	mov rax, r12
+	mov rax, r11
 
 	movd rdx, xmm11
 	movd r11, xmm15
@@ -872,23 +880,22 @@ fastCarry proc
 	@dummy7:
 	pop r10
 	;lea r10, [rip]
-	inc r10
+	add r10, 08h
 	jmp @init_loop
 	pinsrq xmm3, rax, 0h
 	;movlpd xmm3, rax 
-	mov rax, r12
+	mov rax, r11
 
 	;movhpd xmm4, xmm11
 	;movd rdx, xmm4
 	;movhpd xmm4, xmm15
 	;movd r11, xmm4
-	pextrq rdx, xmm4, 1h
-	pextrq r11, xmm4, 1h
-	xor rax, rax
+	pextrq rdx, xmm11, 1h
+	pextrq r11, xmm15, 1h
+	xor r10, r10
 	jmp @init_loop
-	pinsrq xmm3, rax, 1h
 	;movhpd xmm3, rax 
-	mov rax, r12
+
 
 	@init_loop:	
 	mov rbx, 1h
@@ -902,17 +909,19 @@ fastCarry proc
 		or rax, r12
 		shl rbx, 1
 	loop @loop
-	mov r12, r11
-	and r12, rax
-	or r12, rdx
+	;mov r12, r11
+	and r11, rax
+	or r11, rdx
 	mov r13, 8000000000000000h
-	and r12, r13
-	rcl r12, 1		
+	and r11, r13
+	rcl r11, 2		
 
 	test r10, 0ffffffffffffffffh
 	je @exit
 	jmp r10
 	@exit:
+	pinsrq xmm3, rax, 1h
+	mov rax, r11
 
 	pop rbp
 	ret
@@ -984,6 +993,15 @@ PgGg endp
 ALU proc
 	push rbp
 	mov rbp, rsp
+	sub rsp, 16
+	cld
+	lea rdi, [rbp - 16]
+	mov rcx, 15
+	mov al, 00h
+	rep stosb
+	mov al, 80h
+	stosb
+
 	mov rax, [rbp + 16] 
 	movdqu xmm0, xmmword ptr [rbp + 24]
 	movdqu xmm1, xmmword ptr [rbp + 40]
@@ -1226,35 +1244,56 @@ ALU proc
 	jmp @end_switch
 
 	;x-1
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	pcmpeqb xmm4,xmm4
+	pcmpeqb xmm5,xmm5
+	pcmpeqb xmm6,xmm6
+	pcmpeqb xmm7,xmm7
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrq rdx, xmm3, 1h
+	rcl rdx, 1
+	jnc @skip
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+	;orpd xmm3, significantBit
+	;orps xmm3, significantBit
+	@skip:
 	jmp @end_switch
 
 	;(xy)-1
@@ -2388,6 +2427,7 @@ ALU proc
 	jmp @end_switch
 
 	@end_switch:
+	add rsp, 16
 	pop rbp
 	ret
 ALU endp

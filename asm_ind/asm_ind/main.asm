@@ -649,12 +649,24 @@ main proc
 	add rsp, 16
 	movaps xmm7,xmm13
 
-	movaps xmm0,xmm8
-	movaps xmm1,xmm9
-	movaps xmm2,xmm10
-	movaps xmm3,xmm11
-	movaps xmm4,xmm12
-	movaps xmm5,xmm14
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm6
+	movdqu xmmword ptr [rsp + 32], xmm14
+	movdqu xmmword ptr [rsp + 48], xmm12
+	movdqu xmmword ptr [rsp + 64], xmm11
+	movdqu xmmword ptr [rsp + 80], xmm10
+	movdqu xmmword ptr [rsp + 96], xmm9
+	movdqu xmmword ptr [rsp + 112], xmm8
+	call ALU
+	add rsp, 128
+
+	;movaps xmm0,xmm8
+	;movaps xmm1,xmm9
+	;movaps xmm2,xmm10
+	;movaps xmm3,xmm11
+	;movaps xmm4,xmm12
+	;movaps xmm5,xmm14
 	
 	jmp @end
 

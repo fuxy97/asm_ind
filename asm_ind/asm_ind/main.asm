@@ -1035,33 +1035,33 @@ ALU proc
 	;c=0 M=0
 	cmp rax, 0h	
 	je @switch
-	cmp rax, 1h
+	cmp rax, 8h
 	je @switch + 118
-	cmp rax, 2h
-	je @switch + 124
-	cmp rax, 3h
-	je @switch + 130
 	cmp rax, 4h
+	je @switch + 124
+	cmp rax, 0Ch
+	je @switch + 130
+	cmp rax, 2h
 	je @switch + 136
-	cmp rax, 5h
+	cmp rax, 0Ah
 	je @switch + 142
 	cmp rax, 6h
 	je @switch + 148
-	cmp rax, 07h
-	je @switch + 154
-	cmp rax, 08h
-	je @switch + 160
-	cmp rax, 09h
-	je @switch + 166
-	cmp rax, 0Ah
-	je @switch + 72
-	cmp rax, 0Bh
-	je @switch + 80
-	cmp rax, 0Ch
-	je @switch + 88
-	cmp rax, 0Dh
-	je @switch + 96
 	cmp rax, 0Eh
+	je @switch + 154
+	cmp rax, 1h
+	je @switch + 160
+	cmp rax, 9h
+	je @switch + 166
+	cmp rax, 5h
+	je @switch + 72
+	cmp rax, 0Dh
+	je @switch + 80
+	cmp rax, 3h
+	je @switch + 88
+	cmp rax, 0Bh
+	je @switch + 96
+	cmp rax, 7h
 	je @switch + 104
 	cmp rax, 0Fh
 	je @switch + 112
@@ -1069,33 +1069,33 @@ ALU proc
 	;c=1 M=0
 	cmp rax, 20h	
 	je @switch
-	cmp rax, 21h
+	cmp rax, 28h
 	je @switch + 6
-	cmp rax, 22h
-	je @switch + 12
-	cmp rax, 23h
-	je @switch + 18
 	cmp rax, 24h
+	je @switch + 12
+	cmp rax, 2Ch
+	je @switch + 18
+	cmp rax, 22h
 	je @switch + 24
-	cmp rax, 25h
+	cmp rax, 2Ah
 	je @switch + 32
 	cmp rax, 26h
 	je @switch + 40
-	cmp rax, 27h
+	cmp rax, 2Eh
 	je @switch + 48
-	cmp rax, 28h
+	cmp rax, 21h
 	je @switch + 56
 	cmp rax, 29h
 	je @switch + 64
-	cmp rax, 2Ah
+	cmp rax, 25h
 	je @switch + 72
-	cmp rax, 2Bh
-	je @switch + 80
-	cmp rax, 2Ch
-	je @switch + 88
 	cmp rax, 2Dh
+	je @switch + 80
+	cmp rax, 23h
+	je @switch + 88
+	cmp rax, 2Bh
 	je @switch + 96
-	cmp rax, 2Eh
+	cmp rax, 27h
 	je @switch + 104
 	cmp rax, 2Fh
 	je @switch + 112

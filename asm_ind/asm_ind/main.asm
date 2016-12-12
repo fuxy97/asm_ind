@@ -658,8 +658,9 @@ main proc
 	movdqu xmmword ptr [rsp + 80], xmm10
 	movdqu xmmword ptr [rsp + 96], xmm9
 	movdqu xmmword ptr [rsp + 112], xmm8
+	push r12
 	call ALU
-	add rsp, 128
+	add rsp, 136
 
 	;movaps xmm0,xmm8
 	;movaps xmm1,xmm9

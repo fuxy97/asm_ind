@@ -950,8 +950,16 @@ PgGg proc
 	movaps xmm8, xmm3
 	mov rcx, 128	
 	@loop1:
-	pslldq xmm8, 1			
-	pslldq xmm10, 1
+	pshufd xmm15, xmm8, 4eh
+	psrlq xmm8, 1
+	psllq xmm15, 63
+	por xmm8, xmm15
+	pshufd xmm15, xmm10, 4eh
+	psrlq xmm10, 1
+	psllq xmm15, 63
+	por xmm10, xmm15
+	;pslldq xmm8, 1			
+	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -961,8 +969,16 @@ PgGg proc
 	movaps xmm8, xmm2
 	mov rcx, 128
 	@loop2:
-	pslldq xmm8, 1			
-	pslldq xmm10, 1
+	pshufd xmm15, xmm8, 4eh
+	psrlq xmm8, 1
+	psllq xmm15, 63
+	por xmm8, xmm15
+	pshufd xmm15, xmm10, 4eh
+	psrlq xmm10, 1
+	psllq xmm15, 63
+	por xmm10, xmm15
+	;pslldq xmm8, 1			
+	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -972,8 +988,16 @@ PgGg proc
 	movaps xmm8, xmm1
 	mov rcx, 128
 	@loop3:
-	pslldq xmm8, 1			
-	pslldq xmm10, 1
+	pshufd xmm15, xmm8, 4eh
+	psrlq xmm8, 1
+	psllq xmm15, 63
+	por xmm8, xmm15
+	pshufd xmm15, xmm10, 4eh
+	psrlq xmm10, 1
+	psllq xmm15, 63
+	por xmm10, xmm15
+	;pslldq xmm8, 1			
+	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -983,8 +1007,16 @@ PgGg proc
 	movaps xmm8, xmm0
 	mov rcx, 128
 	@loop4:
-	pslldq xmm8, 1			
-	pslldq xmm10, 1
+	pshufd xmm15, xmm8, 4eh
+	psrlq xmm8, 1
+	psllq xmm15, 63
+	por xmm8, xmm15
+	pshufd xmm15, xmm10, 4eh
+	psrlq xmm10, 1
+	psllq xmm15, 63
+	por xmm10, xmm15
+	;pslldq xmm8, 1			
+	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -1022,6 +1054,60 @@ ALU proc
 	and rax, 1Fh
 	@continue:
 	
+	movaps xmm8, xmm4
+	pcmpeqb xmm8, xmm0
+	pextrq rdx, xmm8, 0h
+	pextrq r10, xmm8, 1h
+	mov rcx, 64
+	@loopALU1:
+	rcl rdx, 1
+	jnc @not_eq
+	rcl r10, 1
+	jnc @not_eq 
+	loop @loopALU1
+
+	movaps xmm8, xmm5
+	pcmpeqb xmm8, xmm1
+	pextrq rdx, xmm8, 0h
+	pextrq r10, xmm8, 1h
+	mov rcx, 64
+	@loopALU2:
+	rcl rdx, 1
+	jnc @not_eq
+	rcl r10, 1
+	jnc @not_eq 
+	loop @loopALU2
+
+	movaps xmm8, xmm6
+	pcmpeqb xmm8, xmm2
+	pextrq rdx, xmm8, 0h
+	pextrq r10, xmm8, 1h
+	mov rcx, 64
+	@loopALU3:
+	rcl rdx, 1
+	jnc @not_eq
+	rcl r10, 1
+	jnc @not_eq 
+	loop @loopALU3
+
+	movaps xmm8, xmm7
+	pcmpeqb xmm8, xmm3
+	pextrq rdx, xmm8, 0h
+	pextrq r10, xmm8, 1h
+	mov rcx, 64
+	@loopALU4:
+	rcl rdx, 1
+	jnc @not_eq
+	rcl r10, 1
+	jnc @not_eq 
+	loop @loopALU4
+
+	mov r15, 1h
+
+	jmp @continue1
+	@not_eq:
+	mov r15, 0h
+	@continue1:
 	;M=1
 	cmp rax, 10h	
 	je @f1
@@ -2542,6 +2628,31 @@ ALU proc
 	push 1
 	call fastCarry
 	add rsp, 136
+
+	sub rsp, 64
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	push rax
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm12
+	movdqu xmmword ptr [rsp + 16], xmm13
+	movdqu xmmword ptr [rsp + 32], xmm14
+	movdqu xmmword ptr [rsp + 48], xmm15
+	movdqu xmmword ptr [rsp + 64], xmm8
+	movdqu xmmword ptr [rsp + 80], xmm9
+	movdqu xmmword ptr [rsp + 96], xmm10
+	movdqu xmmword ptr [rsp + 112], xmm11
+	call PgGg
+	add rsp, 128
+	mov r12, rax
+	pop rax
+	shl rax, 1
+	or rax, r12
+	shl rax, 1
+	or rax, rdx
+
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -2561,6 +2672,8 @@ ALU proc
 	jmp @end_switch
 
 	@end_switch:
+	shl rax, 1
+	or rax, r15
 	add rsp, 16
 	pop rbp
 	ret

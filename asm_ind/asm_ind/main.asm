@@ -19,6 +19,12 @@ orm macro x, y, z
 	 orpd z, y
 endm
 
+orrm macro x, y, z
+	 movapd xmm15, x
+	 orpd xmm15, y
+	 movaps z,xmm15
+endm
+
 xorm macro x, y, res
 	 movaps res, x
 	 xorps res, y
@@ -1018,113 +1024,114 @@ ALU proc
 	
 	;M=1
 	cmp rax, 10h	
-	je @switch
+	je @f1
 	cmp rax, 18h
-	je @switch+3Dh
+	je @f2
 	cmp rax, 14h
-	je @switch + 96h
+	je @f3
 	cmp rax, 1Ch
-	je @switch + 0F3h
+	je @f4
 	cmp rax, 12h
-	je @switch + 11Bh
+	je @f5
 	cmp rax, 1Ah
-	je @switch + 178h
+	je @f6
 	cmp rax, 16h
-	je @switch + 1B5h
+	je @f7
 	cmp rax, 1Eh
-	je @switch + 20Ah
+	je @f8
 	cmp rax, 11h
-	je @switch + 267h
+	je @f9
 	cmp rax, 19h
-	je @switch + 2C0h
+	je @f10
 	cmp rax, 15h
-	je @switch + 2DDh
+	je @f11
 	cmp rax, 1Dh
-	je @switch + 2EEh
+	je @f12
 	cmp rax, 13h
-	je @switch + 313h
+	je @f13
 	cmp rax, 1Bh
-	je @switch + 330h
+	je @f14
 	cmp rax, 17h
-	je @switch + 389h
+	je @f15
 	cmp rax, 1Fh
-	je @switch + 3AAh
+	je @end_switch
 
 	;c=0 M=0
 	cmp rax, 0h	
-	je @switch+3AFh
+	je @f16
 	cmp rax, 8h
-	je @switch + 118
+	je @f17
 	cmp rax, 4h
-	je @switch + 124
+	je @f18
 	cmp rax, 0Ch
-	je @switch + 130
+	je @f19
 	cmp rax, 2h
-	je @switch + 136
+	je @f20
 	cmp rax, 0Ah
-	je @switch + 142
+	je @f21
 	cmp rax, 6h
-	je @switch + 148
+	je @f22
 	cmp rax, 0Eh
-	je @switch + 154
+	je @f8
 	cmp rax, 1h
-	je @switch + 160
+	je @f23
 	cmp rax, 9h
-	je @switch + 166
+	je @f24
 	cmp rax, 5h
-	je @switch + 72
+	je @f25
 	cmp rax, 0Dh
-	je @switch + 80
+	je @f12
 	cmp rax, 3h
-	je @switch + 88
+	je @f26
 	cmp rax, 0Bh
-	je @switch + 96
+	je @f27
 	cmp rax, 7h
-	je @switch + 104
+	je @f28
 	cmp rax, 0Fh
-	je @switch + 112
+	je @end_switch
 
 	;c=1 M=0
 	cmp rax, 20h	
-	je @switch
+	je @end_switch
 	cmp rax, 28h
-	je @switch + 6
+	je @f15
 	cmp rax, 24h
-	je @switch + 12
+	je @f14
 	cmp rax, 2Ch
-	je @switch + 18
+	je @f13
 	cmp rax, 22h
-	je @switch + 24
+	je @f29
 	cmp rax, 2Ah
-	je @switch + 32
+	je @f30
 	cmp rax, 26h
-	je @switch + 40
+	je @f31
 	cmp rax, 2Eh
-	je @switch + 48
+	je @f32
 	cmp rax, 21h
-	je @switch + 56
+	je @f33
 	cmp rax, 29h
-	je @switch + 64
+	je @f34
 	cmp rax, 25h
-	je @switch + 72
+	je @f35
 	cmp rax, 2Dh
-	je @switch + 80
+	je @f36
 	cmp rax, 23h
-	je @switch + 88
+	je @f37
 	cmp rax, 2Bh
-	je @switch + 96
+	je @f38
 	cmp rax, 27h
-	je @switch + 104
+	je @f39
 	cmp rax, 2Fh
-	je @switch + 112
+	je @f40
 
-	@switch:
+	@f1:
 	;_x
 	notm xmm0, xmm0
 	notm xmm1, xmm1
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
+	@f2:
 	;_(xy)
 	andm xmm0, xmm4,xmm0
 	andm xmm1, xmm5,xmm1
@@ -1135,6 +1142,7 @@ ALU proc
 	notm xmm2,xmm2
 	notm xmm3,xmm3
 	jmp @end_switch
+	@f3:
 	;_xUy
 	notm xmm0, xmm0
 	notm xmm1, xmm1
@@ -1145,6 +1153,7 @@ ALU proc
 	orm xmm2, xmm6,xmm2
 	orm xmm3, xmm7,xmm3
 	jmp @end_switch
+	@f4:
 	;1
 	xorm xmm0, xmm0,xmm0
 	xorm xmm1, xmm1,xmm1
@@ -1152,8 +1161,8 @@ ALU proc
 	xorm xmm3, xmm3,xmm3
 	mov edx, 0001h
 	pinsrb xmm3, edx, 0h
-	;-------------------------
 	jmp @end_switch
+	@f5:
 	;_(xUy)
 	orm xmm0, xmm4,xmm0
 	orm xmm1, xmm5,xmm1
@@ -1164,12 +1173,14 @@ ALU proc
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
+	@f6:
 	;_y
 	notm xmm4, xmm0
 	notm xmm5, xmm1
 	notm xmm5, xmm2
 	notm xmm6, xmm3
 	jmp @end_switch
+	@f7:
 	;_(x|+|y)
 	xorm xmm0, xmm4,xmm0
 	xorm xmm1, xmm5,xmm1
@@ -1180,6 +1191,7 @@ ALU proc
 	notm xmm2, xmm2
 	notm xmm3, xmm3
 	jmp @end_switch
+	@f8:
 	;xU_y
 	notm xmm4, xmm4
 	notm xmm5, xmm5
@@ -1190,6 +1202,7 @@ ALU proc
 	orm xmm2, xmm6,xmm2
 	orm xmm3, xmm7,xmm3
 	jmp @end_switch
+	@f9:
 	;_xy
 	notm xmm0,xmm0
 	notm xmm1,xmm1
@@ -1200,30 +1213,35 @@ ALU proc
 	andm xmm2,xmm6,xmm2
 	andm xmm3,xmm7,xmm3
 	jmp @end_switch
+	@f10:
 	;x|+|y
 	xorm xmm0, xmm4,xmm0
 	xorm xmm1, xmm5,xmm1
 	xorm xmm2, xmm6,xmm2
 	xorm xmm3, xmm7,xmm3
 	jmp @end_switch
+	@f11:
 	;y
 	movaps xmm0,xmm4
 	movaps xmm1,xmm5
 	movaps xmm2,xmm6
 	movaps xmm3,xmm7
 	jmp @end_switch
+	@f12:
 	;xUy
 	orm xmm0, xmm4, xmm0
 	orm xmm1, xmm5, xmm1
 	orm xmm2, xmm6, xmm2
 	orm xmm3, xmm7, xmm3
 	jmp @end_switch
+	@f13:
 	;0
 	xorm xmm0,xmm0,xmm0
 	xorm xmm1,xmm1,xmm1
 	xorm xmm2,xmm2,xmm2
 	xorm xmm3,xmm3,xmm3
 	jmp @end_switch
+	@f14:
 	;x_y
 	notm xmm4, xmm4,xmm4
 	notm xmm5, xmm5,xmm5
@@ -1234,17 +1252,15 @@ ALU proc
 	andm xmm2, xmm6,xmm2
 	andm xmm3, xmm7,xmm3
 	jmp @end_switch
+	@f15:
 	;xy
 	andm xmm0, xmm4,xmm0
 	andm xmm1, xmm5,xmm1
 	andm xmm2, xmm6,xmm2
 	andm xmm3, xmm7,xmm3
 	jmp @end_switch
-	;x
-	jmp @end_switch
-
+	@f16:
 	;x-1
-	;movdqu xmm3, xmmword ptr [rbp - 16]
 	pextrq rdx, xmm3, 1h
 	mov rcx, 8000000000000000h
 	test rdx, rcx
@@ -1325,186 +1341,16 @@ ALU proc
 	;orps xmm3, significantBit
 	@skip:
 	jmp @end_switch
-
+	@f17:
 	;(xy)-1
-	andm xmm0, xmm4, xmm0
-	andm xmm1, xmm4, xmm1
-	andm xmm2, xmm4, xmm2
-	andm xmm3, xmm4, xmm3
-	xorpd xmm4, xmm4
-	notm xmm4, xmm4 
-	xorpd xmm5, xmm5
-	notm xmm5, xmm5
-	xorpd xmm6, xmm6
-	notm xmm6, xmm6
-	xorpd xmm7, xmm7
-	notm xmm7, xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	jmp @end_switch
-
-	;(x -y)-1
-	notm xmm4, xmm4
-	notm xmm5, xmm5
-	notm xmm6, xmm6
-	notm xmm7, xmm7
-	andm xmm0, xmm4, xmm0
-	andm xmm1, xmm4, xmm1
-	andm xmm2, xmm4, xmm2
-	andm xmm3, xmm4, xmm3
-
-	xorpd xmm4, xmm4
-	notm xmm4, xmm4 
-	xorpd xmm5, xmm5
-	notm xmm5, xmm5
-	xorpd xmm6, xmm6
-	notm xmm6, xmm6
-	xorpd xmm7, xmm7
-	notm xmm7, xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	jmp @end_switch
-
-	;-1-------------------------------------
-	xorm xmm0,xmm0,xmm0
-	xorm xmm1,xmm1,xmm1
-	xorm xmm2,xmm2,xmm2
-	xorm xmm3,xmm3,xmm3
-	notm xmm0, xmm0
-	notm xmm1, xmm1
-	notm xmm2, xmm2
-	notm xmm3, xmm3
-	jmp @end_switch
-
-	;x+(xU-y)
-	notm xmm4,xmm4
-	notm xmm5,xmm5
-	notm xmm6,xmm6
-	notm xmm7,xmm7
-	orm xmm0, xmm4, xmm4
-	orm xmm1, xmm5, xmm5
-	orm xmm2, xmm6, xmm6
-	orm xmm3, xmm7, xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	jmp @end_switch
-
-	;xy+(xU-y)
-	andm xmm4, xmm0,xmm8
-	andm xmm5, xmm1,xmm9
-	andm xmm6, xmm2,xmm10
-	andm xmm7, xmm3,xmm11
-
-	notm xmm4,xmm4
-	notm xmm5,xmm5
-	notm xmm6,xmm6
-	notm xmm7,xmm7
-	orm xmm0, xmm4,xmm4
-	orm xmm1, xmm5, xmm5
-	orm xmm2, xmm6, xmm6
-	orm xmm3, xmm7, xmm7
-
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm8
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm9
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm10
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm11
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	jmp @end_switch
-
-	;(x-y)-1---------------------------------------
+	andm xmm0,xmm4,xmm0
+	andm xmm1,xmm5,xmm1
+	andm xmm2,xmm6,xmm2
+	andm xmm3,xmm7,xmm3
 	pextrq rdx, xmm3, 1h
 	mov rcx, 8000000000000000h
 	test rdx, rcx
-	je @skip3
+	je @skip21
 	notm xmm0, xmm0
 	notm xmm1, xmm1
 	notm xmm2, xmm2
@@ -1529,10 +1375,290 @@ ALU proc
 	xorrm xmm15, xmm3, xmm3
 	movdqu xmm4, xmmword ptr [rbp - 16]
 	por xmm3, xmm4
+	@skip21:
+	pcmpeqb xmm4,xmm4
+	pcmpeqb xmm5,xmm5
+	pcmpeqb xmm6,xmm6
+	pcmpeqb xmm7,xmm7
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrq rdx, xmm3, 1h
+	rcl rdx, 1
+	jnc @skip20
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+	@skip20:
+	jmp @end_switch
+	@f18:
+	;(x_y)-1
+	notm xmm4,xmm4
+	notm xmm5,xmm5
+	notm xmm6,xmm6
+	notm xmm7,xmm7
+	andm xmm0,xmm4,xmm0
+	andm xmm1,xmm5,xmm1
+	andm xmm2,xmm6,xmm2
+	andm xmm3,xmm7,xmm3
+	pextrq rdx, xmm3, 1h
+	mov rcx, 8000000000000000h
+	test rdx, rcx
+	je @skip31
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+	@skip31:
+	pcmpeqb xmm4,xmm4
+	pcmpeqb xmm5,xmm5
+	pcmpeqb xmm6,xmm6
+	pcmpeqb xmm7,xmm7
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrq rdx, xmm3, 1h
+	rcl rdx, 1
+	jnc @skip30
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+	@skip30:
+	jmp @end_switch
+	@f19:
+	;-1
+	xorrm xmm0,xmm0,xmm0
+	xorrm xmm1,xmm1,xmm1
+	xorrm xmm2,xmm2,xmm2
+	xorrm xmm3,xmm3,xmm3
+	mov rax, 1h
+	pinsrq xmm0, rax, 0h
+	mov rax, 8000000000000000h
+	pinsrq xmm3, rax, 1h
+	jmp @end_switch
+	@f20:
+	;x+(xU_y)
+	notm xmm4,xmm4
+	notm xmm5,xmm5
+	notm xmm6,xmm6
+	notm xmm7,xmm7
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
+	jmp @end_switch
+	@f21:
+	;xy+(xU_y)
+	movaps xmm8, xmm4 
+	movaps xmm9, xmm5
+	movaps xmm10, xmm5  
+	movaps xmm11, xmm6 
+	notm xmm4,xmm4
+	notm xmm5,xmm5
+	notm xmm6,xmm6
+	notm xmm7,xmm7
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	andm xmm0, xmm8,xmm0
+	andm xmm1, xmm9,xmm1
+	andm xmm2, xmm10,xmm2
+	andm xmm3, xmm11,xmm3
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
+	jmp @end_switch
+	@f22:
+	;(x-y)-1
+	pextrq rdx, xmm3, 1h
+	mov rcx, 8000000000000000h
+	test rdx, rcx
+	je @skip3
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+
+	sub rsp, 64
+	movdqu xmmword ptr [rsp], xmm4
+	movdqu xmmword ptr [rsp+16], xmm5
+	movdqu xmmword ptr [rsp+32], xmm6
+	movdqu xmmword ptr [rsp+48], xmm7
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+
+	movdqu xmm4,xmmword ptr [rsp]
+	movdqu xmm5,xmmword ptr [rsp+16]
+	movdqu xmm6,xmmword ptr [rsp+32]
+	movdqu xmm7,xmmword ptr [rsp+48]
+	add rsp,64
 	@skip3:
-	pextrb dl, xmm7, Fh
-	and dl, 7F
-	pinsrb xmm7, dl, Fh
+	pextrb rdx, xmm7, 0Fh
+	and dl, 7Fh
+	pinsrb xmm7, rdx, 0Fh
 	notm xmm4,xmm4
 	notm xmm5,xmm5
 	notm xmm6,xmm6
@@ -1556,9 +1682,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 	xorrm xmm12, xmm0, xmm4
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm4
 	xorrm xmm13, xmm1, xmm5
 	xorrm xmm14, xmm2, xmm6
 	xorrm xmm15, xmm3, xmm7
+	movdqu xmm4, xmmword ptr [rsp]
+	add rsp, 16 
 	movdqu xmm8, xmmword ptr [rbp - 16]
 	por xmm7, xmm8
 	movdqu xmm0, xmmword ptr [rsp]
@@ -1566,8 +1696,6 @@ ALU proc
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
 	add rsp, 128
-
-
 
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
@@ -1637,901 +1765,799 @@ ALU proc
 	;orps xmm3, significantBit
 	@skip4:
 	jmp @end_switch
-
-	;xU_y
-	notm xmm4, xmm4
-	notm xmm5, xmm5
-	notm xmm6, xmm6
-	notm xmm7, xmm7
-	orm xmm0, xmm4,xmm0
-	orm xmm1, xmm5,xmm1
-	orm xmm2, xmm6,xmm2
-	orm xmm3, xmm7,xmm3
-	jmp @end_switch
-
+	@f23:
 	;x+(xUy)
-	orm xmm0, xmm4, xmm4
-	orm xmm1, xmm5, xmm5
-	orm xmm2, xmm6, xmm6
-	orm xmm3, xmm7, xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f24:
 	;x+y
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f25:
 	;(x_y)+(xUy)
-	notm xmm4, xmm8
-	notm xmm5, xmm9
-	notm xmm6, xmm10
-	notm xmm7, xmm11
-	andm xmm8, xmm0, xmm8
-	andm xmm9, xmm1, xmm9
-	andm xmm10, xmm2, xmm10
-	andm xmm11, xmm3, xmm11
-
-	orm xmm0, xmm4, xmm0
-	orm xmm1, xmm5, xmm1
-	orm xmm2, xmm6, xmm2
-	orm xmm3, xmm7, xmm3
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	movaps xmm8, xmm4
+	movaps xmm9, xmm5
+	movaps xmm10, xmm6
+	movaps xmm11, xmm7
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	notm xmm8,xmm8
+	notm xmm9,xmm9
+	notm xmm10,xmm10
+	notm xmm11,xmm11
+	andm xmm0, xmm8, xmm0
+	andm xmm1, xmm9, xmm1
+	andm xmm2, xmm10, xmm2
+	andm xmm3, xmm11, xmm3
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm8
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm9
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm10
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm11
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
-	;xUy
-	orm xmm0, xmm4, xmm0
-	orm xmm1, xmm5, xmm1
-	orm xmm2, xmm6, xmm2
-	orm xmm3, xmm7, xmm3
-	jmp @end_switch
-
+	@f26:
 	;x+x
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm0
+	movdqu xmmword ptr [rsp + 80], xmm1
+	movdqu xmmword ptr [rsp + 96], xmm2
+	movdqu xmmword ptr [rsp + 112], xmm3
+	push 0
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f27:
 	;xy+x
-	andm xmm0, xmm4, xmm4 
-	andm xmm1, xmm5, xmm5
-	andm xmm2, xmm6, xmm6
-	andm xmm3, xmm7, xmm7
-
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	andm xmm0 ,xmm4, xmm4
+	andm xmm1 ,xmm5, xmm5
+	andm xmm2 ,xmm6, xmm6
+	andm xmm3 ,xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f28:
 	;x_y+x
-	notm xmm4, xmm4
-	notm xmm5, xmm5
-	notm xmm6, xmm6
-	notm xmm7, xmm7
-	andm xmm0, xmm4, xmm4 
-	andm xmm1, xmm5, xmm5
-	andm xmm2, xmm6, xmm6
-	andm xmm3, xmm7, xmm7
-
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	jmp @end_switch
-
-	;x
-	jmp @end_switch
-
-	;x
-	jmp @end_switch
-
-	;xy
-	andm xmm0,xmm4,xmm0
-	andm xmm1,xmm5,xmm1
-	andm xmm2,xmm6,xmm2
-	andm xmm3,xmm7,xmm3
-	jmp @end_switch
-
-	;x_y
 	notm xmm4,xmm4
 	notm xmm5,xmm5
 	notm xmm6,xmm6
 	notm xmm7,xmm7
-	andm xmm0,xmm4,xmm0
-	andm xmm1,xmm5,xmm1
-	andm xmm2,xmm6,xmm2
-	andm xmm3,xmm7,xmm3
+	andm xmm0 ,xmm4, xmm4
+	andm xmm1 ,xmm5, xmm5
+	andm xmm2 ,xmm6, xmm6
+	andm xmm3 ,xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
-	;0
-	xorm xmm0,xmm0,xmm0
-	xorm xmm1,xmm1,xmm1
-	xorm xmm2,xmm2,xmm2
-	xorm xmm3,xmm3,xmm3
-	jmp @end_switch
-
+	@f29:
 	;x+(xU_y)+1
 	notm xmm4,xmm4
 	notm xmm5,xmm5
 	notm xmm6,xmm6
 	notm xmm7,xmm7
-	orm xmm0, xmm4, xmm4
-	orm xmm1, xmm5, xmm5
-	orm xmm2, xmm6, xmm6
-	orm xmm3, xmm7, xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5, xmm5,xmm5
-	xorm xmm6, xmm6,xmm6
-	xorm xmm7, xmm7,xmm7
-	notm xmm4,xmm4
-	notm xmm5,xmm5
-	notm xmm6,xmm6
-	notm xmm7,xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	shr rax,5
 	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
-
+	@f30:
 	;xy+(xU_y)+1
-	andm xmm0, xmm4, xmm8
-	andm xmm1, xmm5, xmm9
-	andm xmm2, xmm6, xmm10
-	andm xmm3, xmm7, xmm11
+	movaps xmm8, xmm4 
+	movaps xmm9, xmm5
+	movaps xmm10, xmm5  
+	movaps xmm11, xmm6 
 	notm xmm4,xmm4
 	notm xmm5,xmm5
 	notm xmm6,xmm6
 	notm xmm7,xmm7
-	orm xmm0, xmm4, xmm4
-	orm xmm1, xmm5, xmm5
-	orm xmm2, xmm6, xmm6
-	orm xmm3, xmm7, xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm8
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm9
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm10
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm11
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5, xmm5,xmm5
-	xorm xmm6, xmm6,xmm6
-	xorm xmm7, xmm7,xmm7
-	notm xmm4,xmm4
-	notm xmm5,xmm5
-	notm xmm6,xmm6
-	notm xmm7,xmm7
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	andm xmm0, xmm8,xmm0
+	andm xmm1, xmm9,xmm1
+	andm xmm2, xmm10,xmm2
+	andm xmm3, xmm11,xmm3
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	shr rax,5
 	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
+	@f31:
+	;x-y
+	pextrq rdx, xmm3, 1h
+	mov rcx, 8000000000000000h
+	test rdx, rcx
+	je @skip344
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
 
-	;x-y---------------------------------------
+	sub rsp, 64
+	movdqu xmmword ptr [rsp], xmm4
+	movdqu xmmword ptr [rsp+16], xmm5
+	movdqu xmmword ptr [rsp+32], xmm6
+	movdqu xmmword ptr [rsp+48], xmm7
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+
+	movdqu xmm4,xmmword ptr [rsp]
+	movdqu xmm5,xmmword ptr [rsp+16]
+	movdqu xmm6,xmmword ptr [rsp+32]
+	movdqu xmm7,xmmword ptr [rsp+48]
+	add rsp,64
+	@skip344:
+	pextrb rdx, xmm7, 0Fh
+	and dl, 7Fh
+	pinsrb xmm7, rdx, 0Fh
 	notm xmm4,xmm4
 	notm xmm5,xmm5
 	notm xmm6,xmm6
 	notm xmm7,xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
 	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm5
+	movdqu xmmword ptr [rsp + 32], xmm6
+	movdqu xmmword ptr [rsp + 48], xmm7
+	rep stosq
+	push 1
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	jmp @end_switch
+	xorrm xmm12, xmm0, xmm4
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm4
+	xorrm xmm13, xmm1, xmm5
+	xorrm xmm14, xmm2, xmm6
+	xorrm xmm15, xmm3, xmm7
+	movdqu xmm4, xmmword ptr [rsp]
+	add rsp, 16 
+	movdqu xmm8, xmmword ptr [rbp - 16]
+	por xmm7, xmm8
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	add rsp, 128
 
-	;xU_y+x
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	
+	pextrq rdx, xmm3, 1h
+	rcl rdx, 1
+	jnc @skip444
+	notm xmm0, xmm0
+	notm xmm1, xmm1
+	notm xmm2, xmm2
+	notm xmm3, xmm3
+
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	movdqu xmm4, xmmword ptr [rbp - 16]
+	por xmm3, xmm4
+	@skip444:
+	jmp @end_switch
+	@f32:
+	;xU_y+1
 	notm xmm4, xmm4
 	notm xmm5, xmm5
 	notm xmm6, xmm6
 	notm xmm7, xmm7
-	orm xmm0, xmm4,xmm4
-	orm xmm1, xmm5,xmm5
-	orm xmm2, xmm6,xmm6
-	orm xmm3, xmm7,xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	orrm xmm0, xmm4,xmm0
+	orrm xmm1, xmm5,xmm1
+	orrm xmm2, xmm6,xmm2
+	orrm xmm3, xmm7,xmm3
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	test rax, 1h
+	jne @loopnew
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	shr rax, 7
+	jmp new
+	@loopnew:
+	pextrb rdx, xmm3, 1h
+	new:
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
 	jmp @end_switch
-
-
+	@f33:
 	;x+(xUy)+1
-	orm xmm0, xmm4, xmm4
-	orm xmm1, xmm5, xmm5
-	orm xmm2, xmm6, xmm6
-	orm xmm3, xmm7, xmm7
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
 	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4, xmm4, xmm4
-	xorm xmm5, xmm5, xmm5
-	xorm xmm6, xmm6, xmm6
-	xorm xmm7, xmm7, xmm7
-	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f34:
 	;x+y+1
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
 	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f35:
 	;(x_y)+(xUy)+1
-	notm xmm4, xmm8
-	notm xmm5, xmm9
-	notm xmm6, xmm10
-	notm xmm7, xmm11
-	andm xmm8, xmm0, xmm8
-	andm xmm9, xmm1, xmm9
-	andm xmm10, xmm2, xmm10
-	andm xmm11, xmm3, xmm11
-
-	orm xmm0, xmm4, xmm0
-	orm xmm1, xmm5, xmm1
-	orm xmm2, xmm6, xmm2
-	orm xmm3, xmm7, xmm3
+	movaps xmm8, xmm4
+	movaps xmm9, xmm5
+	movaps xmm10, xmm6
+	movaps xmm11, xmm7
+	orrm xmm0, xmm4, xmm4
+	orrm xmm1, xmm5, xmm5
+	orrm xmm2, xmm6, xmm6
+	orrm xmm3, xmm7, xmm7
+	notm xmm8,xmm8
+	notm xmm9,xmm9
+	notm xmm10,xmm10
+	notm xmm11,xmm11
+	andm xmm0, xmm8, xmm0
+	andm xmm1, xmm9, xmm1
+	andm xmm2, xmm10, xmm2
+	andm xmm3, xmm11, xmm3
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
 	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm8
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm9
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm10
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm11
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	@f36:
 	;xUy+1
-	orm xmm0, xmm4, xmm0
-	orm xmm1, xmm5, xmm1
-	orm xmm2, xmm6, xmm2
-	orm xmm3, xmm7, xmm3
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	orrm xmm0, xmm4,xmm0
+	orrm xmm1, xmm5,xmm1
+	orrm xmm2, xmm6,xmm2
+	orrm xmm3, xmm7,xmm3
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm8
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm9
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm10
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm11
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	test rax, 1h
+	jne @loopnew2
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	shr rax, 7
+	jmp new2
+	@loopnew2:
+	pextrb rdx, xmm3, 1h
+	new2:
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
 	jmp @end_switch
-
+	
+	@f37:
 	;x+x+1
-	movaps xmm8,xmm0
-	movaps xmm9,xmm1
-	movaps xmm10, xmm2
-	movaps xmm11, xmm3
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm0
+	movdqu xmmword ptr [rsp + 80], xmm1
+	movdqu xmmword ptr [rsp + 96], xmm2
+	movdqu xmmword ptr [rsp + 112], xmm3
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
 	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm8
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm9
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm10
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm11
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
-
+	
+	@f38:
 	;xy+x+1
-	orm xmm0,xmm4,xmm4
-	orm xmm1,xmm5,xmm5
-	orm xmm2,xmm6,xmm6
-	orm xmm3,xmm7,xmm7
+	andm xmm0 ,xmm4, xmm4
+	andm xmm1 ,xmm5, xmm5
+	andm xmm2 ,xmm6, xmm6
+	andm xmm3 ,xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 1
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
 	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
-
+	
+	@f39:
 	;x_y+x+1
 	notm xmm4,xmm4
 	notm xmm5,xmm5
 	notm xmm6,xmm6
 	notm xmm7,xmm7
-	andm xmm0,xmm4,xmm4
-	andm xmm1,xmm5,xmm5
-	andm xmm2,xmm6,xmm6
-	andm xmm3,xmm7,xmm7
+	andm xmm0 ,xmm4, xmm4
+	andm xmm1 ,xmm5, xmm5
+	andm xmm2 ,xmm6, xmm6
+	andm xmm3 ,xmm7, xmm7
+	pextrq rdx, xmm3, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	pextrq rdx, xmm7, 1h
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm7, rdx, 1h
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm4
+	movdqu xmmword ptr [rsp + 80], xmm5
+	movdqu xmmword ptr [rsp + 96], xmm6
+	movdqu xmmword ptr [rsp + 112], xmm7
+	push 0
+	call fastCarry
+	add rsp, 136
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	pextrb rax, xmm3, 0Fh
 	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
-	
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	push rax
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
-	call fastCarry
-	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
+	shr rax, 7
 	jmp @end_switch
 
+	@f40:
 	;x+1
-	xorm xmm4,xmm4,xmm4
-	xorm xmm5,xmm5,xmm5
-	xorm xmm6,xmm6,xmm6
-	xorm xmm7,xmm7,xmm7
-	mov rdx, rax
-	shl rdx, 5
-	push rdx
-	sub rsp, 16
+	sub rsp, 128
+	cld
+	xor rax, rax
+	lea rdi, [rsp + 64]
+	mov rcx, 8
 	movdqu xmmword ptr [rsp], xmm0
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm1
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm2
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm3
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm4
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm5
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm6
-	sub rsp, 16
-	movdqu xmmword ptr [rsp], xmm7
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	rep stosq
+	push 1
 	call fastCarry
 	add rsp, 136
-	orm xmm12, xmm0, xmm0
-	orm xmm13, xmm1, xmm1
-	orm xmm14, xmm2, xmm2
-	orm xmm15, xmm3, xmm3
+	xorrm xmm12, xmm0, xmm0
+	xorrm xmm13, xmm1, xmm1
+	xorrm xmm14, xmm2, xmm2
+	xorrm xmm15, xmm3, xmm3
+	test rax, 1h
+	jne @loopnew3
+	pextrb rax, xmm3, 0Fh
+	mov rdx, rax
+	shr rax, 7
+	jmp new3
+	@loopnew3:
+	pextrb rdx, xmm3, 1h
+	new3:
+	mov r12, 7FFFFFFFFFFFFFFFh
+	and rdx, r12
+	pinsrq xmm3, rdx, 1h
 	jmp @end_switch
 
 	@end_switch:

@@ -2653,11 +2653,17 @@ ALU proc
 	shl rax, 1
 	or rax, rdx
 
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	add rsp, 64
+
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
 	xorrm xmm15, xmm3, xmm3
-	test rax, 1h
+	test rax, 4h
 	jne @loopnew3
 	pextrb rax, xmm3, 0Fh
 	mov rdx, rax

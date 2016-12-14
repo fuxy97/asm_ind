@@ -68,10 +68,10 @@ endm
 	Message12 db "¬ведите y1: "
 	Message13 db "¬ведите y2: "
 	Message14 db "¬ведите y3: "
-	Message15 db "r0: "
-	Message16 db 0Dh, 0Ah, "r1: "
-	Message17 db 0Dh, 0Ah, "r2: "
-	Message18 db 0Dh, 0Ah, "r3: "
+	Message15 db "F0: "
+	Message16 db 0Dh, 0Ah, "F1: "
+	Message17 db 0Dh, 0Ah, "F2: "
+	Message18 db 0Dh, 0Ah, "F3: "
 	Message19 db 0Dh, 0Ah, "c4: "
 	Message20 db 0Dh, 0Ah, "PG: "
 	Message21 db 0Dh, 0Ah, "GG: "
@@ -289,8 +289,8 @@ main proc
 
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue11
-	mov qword ptr [rbp - 56], 32
+	jl @continue11
+	mov qword ptr [rbp - 56], 34
 	@continue11:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -339,8 +339,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue12
-	mov qword ptr [rbp - 56], 32
+	jl @continue12
+	mov qword ptr [rbp - 56], 34
 	@continue12:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -389,8 +389,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue13
-	mov qword ptr [rbp - 56], 32
+	jl @continue13
+	mov qword ptr [rbp - 56], 34
 	@continue13:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -439,7 +439,7 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jne @continue14
+	jl @continue14
 	mov qword ptr [rbp - 56], 34
 	@continue14:
 	sub qword ptr [rbp - 56], 2
@@ -489,8 +489,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue15
-	mov qword ptr [rbp - 56], 32
+	jl @continue15
+	mov qword ptr [rbp - 56], 34
 	@continue15:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -539,8 +539,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue16
-	mov qword ptr [rbp - 56], 32
+	jl @continue16
+	mov qword ptr [rbp - 56], 34
 	@continue16:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -589,8 +589,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue17
-	mov qword ptr [rbp - 56], 32
+	jl @continue17
+	mov qword ptr [rbp - 56], 34
 	@continue17:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 
@@ -639,8 +639,8 @@ main proc
 	add rsp, 8
 
 	cmp qword ptr [rbp - 56], 32
-	jle @continue18
-	mov qword ptr [rbp - 56], 32
+	jl @continue18
+	mov qword ptr [rbp - 56], 34
 	@continue18:
 	sub qword ptr [rbp - 56], 2
 	mov rcx, qword ptr [rbp - 56] 

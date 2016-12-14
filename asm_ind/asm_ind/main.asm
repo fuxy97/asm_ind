@@ -1443,7 +1443,7 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	movdqu xmm3, xmmword ptr [rsp + 64]
+	movdqu xmm15, xmmword ptr [rsp + 64]
 	add rsp, 80
 	;end calling PgGg
 

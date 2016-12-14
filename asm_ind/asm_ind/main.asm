@@ -1390,36 +1390,6 @@ ALU proc
 	push 1
 	call fastCarry
 	add rsp, 136
-
-	sub rsp, 64
-	movdqu xmmword ptr [rsp], xmm0
-	movdqu xmmword ptr [rsp + 16], xmm1
-	movdqu xmmword ptr [rsp + 32], xmm2
-	movdqu xmmword ptr [rsp + 48], xmm3
-	push rax
-	sub rsp, 128
-	movdqu xmmword ptr [rsp], xmm12
-	movdqu xmmword ptr [rsp + 16], xmm13
-	movdqu xmmword ptr [rsp + 32], xmm14
-	movdqu xmmword ptr [rsp + 48], xmm15
-	movdqu xmmword ptr [rsp + 64], xmm8
-	movdqu xmmword ptr [rsp + 80], xmm9
-	movdqu xmmword ptr [rsp + 96], xmm10
-	movdqu xmmword ptr [rsp + 112], xmm11
-	call PgGg
-	add rsp, 128
-	mov r12, rax
-	pop rax
-	shl rax, 1
-	or rax, r12
-	shl rax, 1
-	or rax, rdx
-	movdqu xmm0, xmmword ptr [rsp]
-	movdqu xmm1, xmmword ptr [rsp + 16]
-	movdqu xmm2, xmmword ptr [rsp + 32]
-	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
-
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -1443,6 +1413,40 @@ ALU proc
 	push 0
 	call fastCarry
 	add rsp, 136
+
+	;calling PgGg
+	sub rsp, 80
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
+	push rax
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm12
+	movdqu xmmword ptr [rsp + 16], xmm13
+	movdqu xmmword ptr [rsp + 32], xmm14
+	movdqu xmmword ptr [rsp + 48], xmm15
+	movdqu xmmword ptr [rsp + 64], xmm8
+	movdqu xmmword ptr [rsp + 80], xmm9
+	movdqu xmmword ptr [rsp + 96], xmm10
+	movdqu xmmword ptr [rsp + 112], xmm11
+	call PgGg
+	add rsp, 128
+	mov r12, rax
+	pop rax
+	shl rax, 1
+	or rax, r12
+	shl rax, 1
+	or rax, rdx
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	movdqu xmm3, xmmword ptr [rsp + 64]
+	add rsp, 80
+	;end calling PgGg
+
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -1468,36 +1472,6 @@ ALU proc
 	push 1
 	call fastCarry
 	add rsp, 136
-
-	sub rsp, 64
-	movdqu xmmword ptr [rsp], xmm0
-	movdqu xmmword ptr [rsp + 16], xmm1
-	movdqu xmmword ptr [rsp + 32], xmm2
-	movdqu xmmword ptr [rsp + 48], xmm3
-	push rax
-	sub rsp, 128
-	movdqu xmmword ptr [rsp], xmm12
-	movdqu xmmword ptr [rsp + 16], xmm13
-	movdqu xmmword ptr [rsp + 32], xmm14
-	movdqu xmmword ptr [rsp + 48], xmm15
-	movdqu xmmword ptr [rsp + 64], xmm8
-	movdqu xmmword ptr [rsp + 80], xmm9
-	movdqu xmmword ptr [rsp + 96], xmm10
-	movdqu xmmword ptr [rsp + 112], xmm11
-	call PgGg
-	add rsp, 128
-	mov r12, rax
-	pop rax
-	shl rax, 1
-	or rax, r12
-	shl rax, 1
-	or rax, rdx
-	movdqu xmm0, xmmword ptr [rsp]
-	movdqu xmm1, xmmword ptr [rsp + 16]
-	movdqu xmm2, xmmword ptr [rsp + 32]
-	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
-
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2

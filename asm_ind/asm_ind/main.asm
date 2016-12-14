@@ -68,6 +68,14 @@ endm
 	Message12 db "¬ведите y1: "
 	Message13 db "¬ведите y2: "
 	Message14 db "¬ведите y3: "
+	Message15 db "r0: "
+	Message16 db 0Dh, 0Ah, "r1: "
+	Message17 db 0Dh, 0Ah, "r2: "
+	Message18 db 0Dh, 0Ah, "r3: "
+	Message19 db 0Dh, 0Ah, "c4: "
+	Message20 db 0Dh, 0Ah, "PG: "
+	Message21 db 0Dh, 0Ah, "GG: "
+	Message22 db 0Dh, 0Ah, "eq: "
 	ErrorMessage1 db "ќшибка! ¬ведите значение 0 до 1.", 0Dh, 0Ah
 	ErrorMessage2 db "ќшибка! ¬ведите значение 0 до F (в 16 с/с).", 0Dh, 0Ah
 	;significantBit xmmword 80000000000000000000000000000000h
@@ -676,6 +684,201 @@ main proc
 	call ALU
 	add rsp, 136
 
+	push rax
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm0
+	lea rbx, [rbp - 48]
+	push rbx
+	call XmmToASCIIString
+	add rsp, 24
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message15
+	mov r8, 4
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm1
+	lea rbx, [rbp - 48]
+	push rbx
+	call XmmToASCIIString
+	add rsp, 24
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message16
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm2
+	lea rbx, [rbp - 48]
+	push rbx
+	call XmmToASCIIString
+	add rsp, 24
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message17
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	sub rsp, 16
+	movdqu xmmword ptr [rsp], xmm3
+	lea rbx, [rbp - 48]
+	push rbx
+	call XmmToASCIIString
+	add rsp, 24
+
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message18
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 32
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	pop rax
+	mov rdx, rax
+	lea rdi, [rbp - 48]
+	shr rax, 3
+	add rax, 30h
+	stosb
+
+	push rdx
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message19
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 1
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	pop rdx
+	mov rax, rdx
+	lea rdi, [rbp - 48]
+	shr rax, 2
+	and rax, 1h
+	add rax, 30h
+	stosb
+
+	push rdx
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message20
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 1
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	pop rdx
+	mov rax, rdx
+	lea rdi, [rbp - 48]
+	shr rax, 1
+	and rax, 1h
+	add rax, 30h
+	stosb
+
+	push rdx
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message21
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 1
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	pop rdx
+	mov rax, rdx
+	lea rdi, [rbp - 48]
+	and rax, 1h
+	add rax, 30h
+	stosb
+	mov rax, 0Dh
+	stosb
+	mov rax, 0Ah
+	stosb
+
+	push rdx
+	mov rcx, qword ptr [rbp - 8]
+	mov rdx, offset Message22
+	mov r8, 6
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
+	mov rcx, qword ptr [rbp - 8]
+	lea rdx, [rbp - 48]
+	mov r8, 3
+	lea r9, [rbp - 56]
+	push 0
+	call WriteConsoleA
+	add rsp, 8
+
 	;movaps xmm0,xmm8
 	;movaps xmm1,xmm9
 	;movaps xmm2,xmm10
@@ -711,6 +914,51 @@ main proc
 	pop rbp
 	ret
 main endp
+
+XmmToASCIIString proc
+	push rbp
+	mov rbp, rsp
+	cld
+	;movdqu xmm0, xmmword ptr [rbp + 24]
+	lea rsi, [rbp + 24]
+	mov rcx, 16
+
+	mov rdi, [rbp + 16]
+
+	@loopXmmToASCIIString:
+	lodsb
+	mov dl, al
+	and al, 0Fh
+	;s[rsi] <= 0x9
+	cmp al, 9h
+	jg @continueXmmToASCIIString
+	add al, 30h
+	stosb
+	jmp @continueXmmToASCIIString2
+	@continueXmmToASCIIString:
+	;s[rsi] > 0xA
+	add al, 37h
+	stosb
+	@continueXmmToASCIIString2:
+	;s[rsi] <= 0x9
+	shr dl, 4
+	cmp dl, 9h
+	jg @continueXmmToASCIIString4
+	mov al, dl
+	add al, 30h
+	stosb
+	jmp @continueXmmToASCIIString3
+	@continueXmmToASCIIString4:
+	;s[rsi] > 0xA
+	mov al, dl	
+	add al, 37h
+	stosb
+	@continueXmmToASCIIString3:
+	loop @loopXmmToASCIIString
+
+	pop rbp
+	ret
+XmmToASCIIString endp
 
 ASCIIStringToXmm proc
 	push rbp

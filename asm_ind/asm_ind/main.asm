@@ -78,7 +78,6 @@ endm
 	Message22 db 0Dh, 0Ah, "eq: "
 	ErrorMessage1 db "ќшибка! ¬ведите значение 0 до 1.", 0Dh, 0Ah
 	ErrorMessage2 db "ќшибка! ¬ведите значение 0 до F (в 16 с/с).", 0Dh, 0Ah
-	;significantBit xmmword 80000000000000000000000000000000h
 .code
 global proc 
 	call main
@@ -104,6 +103,7 @@ main proc
 	mov rcx, STD_INPUT_HANDLE
 	call GetStdHandle
 	mov [rbp - 16], rax
+
 	;----c0
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message1 
@@ -112,7 +112,6 @@ main proc
 	push 0
 	call WriteConsoleA
 	add rsp, 8
-
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
 	mov r8, 3
@@ -120,16 +119,15 @@ main proc
 	push 0
 	call ReadConsoleA
 	add rsp, 8
-
 	cmp byte ptr [rbp - 48], 31h
 	jg @error
-
 	push 1
 	push [rbp - 48]
 	call ASCIIStringToRax
 	add rsp, 16
 	mov r12, rax
 	shl r12, 1
+
 	;-----M
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message2
@@ -287,7 +285,6 @@ main proc
 	call ReadConsoleA
 	add rsp, 8
 
-
 	cmp qword ptr [rbp - 56], 32
 	jl @continue11
 	mov qword ptr [rbp - 56], 34
@@ -362,7 +359,6 @@ main proc
 	@continue22:
 	inc rdi
 	loop @loop12
-
 	mov rbx, rbp
 	sub rbx, 48
 	push rbx
@@ -379,7 +375,6 @@ main proc
 	push 0
 	call WriteConsoleA
 	add rsp, 8
-
 	mov rcx, qword ptr [rbp - 16]
 	lea rdx, [rbp - 48]
 	mov r8, 32
@@ -387,7 +382,6 @@ main proc
 	push 0
 	call ReadConsoleA
 	add rsp, 8
-
 	cmp qword ptr [rbp - 56], 32
 	jl @continue13
 	mov qword ptr [rbp - 56], 34
@@ -412,7 +406,6 @@ main proc
 	@continue23:
 	inc rdi
 	loop @loop13
-
 	mov rbx, rbp
 	sub rbx, 48
 	push rbx
@@ -421,7 +414,7 @@ main proc
 	add rsp, 16
 	movaps xmm10,xmm13
 
-		;-------x3
+	;-------x3
 	mov rcx, qword ptr [rbp - 8]
 	mov rdx, offset Message10
 	mov r8, 12
@@ -878,13 +871,6 @@ main proc
 	push 0
 	call WriteConsoleA
 	add rsp, 8
-
-	;movaps xmm0,xmm8
-	;movaps xmm1,xmm9
-	;movaps xmm2,xmm10
-	;movaps xmm3,xmm11
-	;movaps xmm4,xmm12
-	;movaps xmm5,xmm14
 	
 	jmp @end
 
@@ -919,7 +905,6 @@ XmmToASCIIString proc
 	push rbp
 	mov rbp, rsp
 	cld
-	;movdqu xmm0, xmmword ptr [rbp + 24]
 	lea rsi, [rbp + 24]
 	mov rcx, 16
 
@@ -964,8 +949,6 @@ ASCIIStringToXmm proc
 	push rbp
 	mov rbp, rsp
 	mov rcx, [rbp + 16]
-	;movdqu xmm1, xmmword ptr [rbp + 16]
-	;movdqu xmm2, xmmword ptr [rbp + 32]
 	xorpd xmm13, xmm13
 	cld
 
@@ -990,7 +973,6 @@ ASCIIStringToXmm proc
 	psllq xmm15, 60
 	pinsrb xmm15, rcx, 15
 	por xmm13, xmm15
-	;psrldq xmm13, 1
 
 	@exitASCIIStringToXmm:
 	pop rbp
@@ -1050,22 +1032,16 @@ fastCarry proc
 	call @dummy1
 	@dummy1:
 	pop r10
-	;lea r10, [rip]
 	add r10, 0Bh
 	jmp @init_loop
 	pinsrq xmm0, rax, 0h
 	mov rax, r11
 	
-	;movhpd xmm4, xmm8
 	pextrq rdx, xmm8, 1h
-	;movd rdx, xmm4
-	;movhpd xmm4, xmm12
 	pextrq r11, xmm12, 1h
-	;movd r11, xmm4
 	call @dummy2
 	@dummy2:
 	pop r10
-	;lea r10, [rip]
 	add r10, 0Bh
 	jmp @init_loop
 	pinsrq xmm0, rax, 1h 
@@ -1076,26 +1052,18 @@ fastCarry proc
 	call @dummy3
 	@dummy3:
 	pop r10
-	;lea r10, [rip]
 	add r10, 0Bh
 	jmp @init_loop
 	pinsrq xmm1, rax, 0h
-	;movlpd xmm1, rax 
 	mov rax, r11
 
-	;movhpd xmm4, xmm9
 	pextrq rdx, xmm9, 1h
-	;movd rdx, xmm4
-	;movhpd xmm4, xmm13
 	pextrq r11, xmm13, 1h
-	;movd r11, xmm4
 	call @dummy4
 	@dummy4:
 	pop r10
-	;lea r10, [rip]
 	add r10, 0Bh
 	jmp @init_loop
-	;movhpd xmm1, rax 
 	pinsrq xmm1, rax, 1h
 	mov rax, r11
 
@@ -1104,28 +1072,20 @@ fastCarry proc
 	call @dummy5
 	@dummy5:
 	pop r10
-	;lea r10, [rip]
 	add r10, 08h
 	jmp @init_loop
-	;movlpd xmm2, rax 
 	pinsrq xmm2, rax, 0h
 	mov rax, r11
 
 
-	;movhpd xmm4, xmm10
-	;movd rdx, xmm4
 	pextrq rdx, xmm10, 1h
-	;movhpd xmm4, xmm14
-	;movd r11, xmm4
 	pextrq r11, xmm14, 1h
 	call @dummy6
 	@dummy6:
 	pop r10
-	;lea r10, [rip]
 	add r10, 08h
 	jmp @init_loop
 	pinsrq xmm2, rax, 1h
-	;movhpd xmm2, rax 
 	mov rax, r11
 
 	movd rdx, xmm11
@@ -1133,22 +1093,14 @@ fastCarry proc
 	call @dummy7
 	@dummy7:
 	pop r10
-	;lea r10, [rip]
 	add r10, 08h
 	jmp @init_loop
 	pinsrq xmm3, rax, 0h
-	;movlpd xmm3, rax 
 	mov rax, r11
-
-	;movhpd xmm4, xmm11
-	;movd rdx, xmm4
-	;movhpd xmm4, xmm15
-	;movd r11, xmm4
 	pextrq rdx, xmm11, 1h
 	pextrq r11, xmm15, 1h
 	xor r10, r10
 	jmp @init_loop
-	;movhpd xmm3, rax 
 
 
 	@init_loop:	
@@ -1163,7 +1115,6 @@ fastCarry proc
 		or rax, r12
 		shl rbx, 1
 	loop @loop
-	;mov r12, r11
 	and r11, rax
 	or r11, rdx
 	mov r13, 8000000000000000h
@@ -1206,8 +1157,6 @@ PgGg proc
 	psrlq xmm10, 1
 	psllq xmm15, 63
 	por xmm10, xmm15
-	;pslldq xmm8, 1			
-	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -1225,8 +1174,6 @@ PgGg proc
 	psrlq xmm10, 1
 	psllq xmm15, 63
 	por xmm10, xmm15
-	;pslldq xmm8, 1			
-	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -1244,8 +1191,6 @@ PgGg proc
 	psrlq xmm10, 1
 	psllq xmm15, 63
 	por xmm10, xmm15
-	;pslldq xmm8, 1			
-	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -1263,8 +1208,6 @@ PgGg proc
 	psrlq xmm10, 1
 	psllq xmm15, 63
 	por xmm10, xmm15
-	;pslldq xmm8, 1			
-	;pslldq xmm10, 1
 	andps xmm9, xmm8
 	andps xmm10, xmm9 
 	orps xmm7, xmm10
@@ -1356,6 +1299,7 @@ ALU proc
 	@not_eq:
 	mov r15, 0h
 	@continue1:
+
 	;M=1
 	cmp rax, 10h	
 	je @f1
@@ -1780,6 +1724,38 @@ ALU proc
 	push 0
 	call fastCarry
 	add rsp, 136
+
+	sub rsp, 80
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
+	push rax
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm12
+	movdqu xmmword ptr [rsp + 16], xmm13
+	movdqu xmmword ptr [rsp + 32], xmm14
+	movdqu xmmword ptr [rsp + 48], xmm15
+	movdqu xmmword ptr [rsp + 64], xmm8
+	movdqu xmmword ptr [rsp + 80], xmm9
+	movdqu xmmword ptr [rsp + 96], xmm10
+	movdqu xmmword ptr [rsp + 112], xmm11
+	call PgGg
+	add rsp, 128
+	mov r12, rax
+	pop rax
+	shl rax, 1
+	or rax, r12
+	shl rax, 1
+	or rax, rdx
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
+
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -1805,36 +1781,6 @@ ALU proc
 	push 1
 	call fastCarry
 	add rsp, 136
-
-	sub rsp, 64
-	movdqu xmmword ptr [rsp], xmm0
-	movdqu xmmword ptr [rsp + 16], xmm1
-	movdqu xmmword ptr [rsp + 32], xmm2
-	movdqu xmmword ptr [rsp + 48], xmm3
-	push rax
-	sub rsp, 128
-	movdqu xmmword ptr [rsp], xmm12
-	movdqu xmmword ptr [rsp + 16], xmm13
-	movdqu xmmword ptr [rsp + 32], xmm14
-	movdqu xmmword ptr [rsp + 48], xmm15
-	movdqu xmmword ptr [rsp + 64], xmm8
-	movdqu xmmword ptr [rsp + 80], xmm9
-	movdqu xmmword ptr [rsp + 96], xmm10
-	movdqu xmmword ptr [rsp + 112], xmm11
-	call PgGg
-	add rsp, 128
-	mov r12, rax
-	pop rax
-	shl rax, 1
-	or rax, r12
-	shl rax, 1
-	or rax, rdx
-	movdqu xmm0, xmmword ptr [rsp]
-	movdqu xmm1, xmmword ptr [rsp + 16]
-	movdqu xmm2, xmmword ptr [rsp + 32]
-	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
-
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -1899,6 +1845,38 @@ ALU proc
 	push 0
 	call fastCarry
 	add rsp, 136
+
+	sub rsp, 80
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
+	push rax
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm12
+	movdqu xmmword ptr [rsp + 16], xmm13
+	movdqu xmmword ptr [rsp + 32], xmm14
+	movdqu xmmword ptr [rsp + 48], xmm15
+	movdqu xmmword ptr [rsp + 64], xmm8
+	movdqu xmmword ptr [rsp + 80], xmm9
+	movdqu xmmword ptr [rsp + 96], xmm10
+	movdqu xmmword ptr [rsp + 112], xmm11
+	call PgGg
+	add rsp, 128
+	mov r12, rax
+	pop rax
+	shl rax, 1
+	or rax, r12
+	shl rax, 1
+	or rax, rdx
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
+
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -1924,36 +1902,6 @@ ALU proc
 	push 1
 	call fastCarry
 	add rsp, 136
-
-	sub rsp, 64
-	movdqu xmmword ptr [rsp], xmm0
-	movdqu xmmword ptr [rsp + 16], xmm1
-	movdqu xmmword ptr [rsp + 32], xmm2
-	movdqu xmmword ptr [rsp + 48], xmm3
-	push rax
-	sub rsp, 128
-	movdqu xmmword ptr [rsp], xmm12
-	movdqu xmmword ptr [rsp + 16], xmm13
-	movdqu xmmword ptr [rsp + 32], xmm14
-	movdqu xmmword ptr [rsp + 48], xmm15
-	movdqu xmmword ptr [rsp + 64], xmm8
-	movdqu xmmword ptr [rsp + 80], xmm9
-	movdqu xmmword ptr [rsp + 96], xmm10
-	movdqu xmmword ptr [rsp + 112], xmm11
-	call PgGg
-	add rsp, 128
-	mov r12, rax
-	pop rax
-	shl rax, 1
-	or rax, r12
-	shl rax, 1
-	or rax, rdx
-	movdqu xmm0, xmmword ptr [rsp]
-	movdqu xmm1, xmmword ptr [rsp + 16]
-	movdqu xmm2, xmmword ptr [rsp + 32]
-	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
-
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -2006,11 +1954,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2033,7 +1982,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2086,11 +2036,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2113,7 +2064,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2265,11 +2217,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2292,7 +2245,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2330,11 +2284,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2357,7 +2312,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2394,11 +2350,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2421,7 +2378,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2474,11 +2432,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2501,7 +2460,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2538,11 +2498,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2565,7 +2526,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2606,11 +2568,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2633,7 +2596,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2678,11 +2642,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2705,7 +2670,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2751,11 +2717,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2778,7 +2745,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2833,11 +2801,12 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -2860,7 +2829,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -2969,6 +2939,39 @@ ALU proc
 	push 0
 	call fastCarry
 	add rsp, 136
+
+
+	sub rsp, 80
+	movdqu xmmword ptr [rsp], xmm0
+	movdqu xmmword ptr [rsp + 16], xmm1
+	movdqu xmmword ptr [rsp + 32], xmm2
+	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
+	push rax
+	sub rsp, 128
+	movdqu xmmword ptr [rsp], xmm12
+	movdqu xmmword ptr [rsp + 16], xmm13
+	movdqu xmmword ptr [rsp + 32], xmm14
+	movdqu xmmword ptr [rsp + 48], xmm15
+	movdqu xmmword ptr [rsp + 64], xmm8
+	movdqu xmmword ptr [rsp + 80], xmm9
+	movdqu xmmword ptr [rsp + 96], xmm10
+	movdqu xmmword ptr [rsp + 112], xmm11
+	call PgGg
+	add rsp, 128
+	mov r12, rax
+	pop rax
+	shl rax, 1
+	or rax, r12
+	shl rax, 1
+	or rax, rdx
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
+
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -2995,36 +2998,6 @@ ALU proc
 	push 1
 	call fastCarry
 	add rsp, 136
-
-	sub rsp, 64
-	movdqu xmmword ptr [rsp], xmm0
-	movdqu xmmword ptr [rsp + 16], xmm1
-	movdqu xmmword ptr [rsp + 32], xmm2
-	movdqu xmmword ptr [rsp + 48], xmm3
-	push rax
-	sub rsp, 128
-	movdqu xmmword ptr [rsp], xmm12
-	movdqu xmmword ptr [rsp + 16], xmm13
-	movdqu xmmword ptr [rsp + 32], xmm14
-	movdqu xmmword ptr [rsp + 48], xmm15
-	movdqu xmmword ptr [rsp + 64], xmm8
-	movdqu xmmword ptr [rsp + 80], xmm9
-	movdqu xmmword ptr [rsp + 96], xmm10
-	movdqu xmmword ptr [rsp + 112], xmm11
-	call PgGg
-	add rsp, 128
-	mov r12, rax
-	pop rax
-	shl rax, 1
-	or rax, r12
-	shl rax, 1
-	or rax, rdx
-	movdqu xmm0, xmmword ptr [rsp]
-	movdqu xmm1, xmmword ptr [rsp + 16]
-	movdqu xmm2, xmmword ptr [rsp + 32]
-	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
-
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
 	xorrm xmm14, xmm2, xmm2
@@ -3058,11 +3031,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3085,7 +3060,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3132,11 +3108,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3159,7 +3137,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3195,11 +3174,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3222,7 +3203,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3275,11 +3257,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3302,7 +3286,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3336,11 +3321,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3363,7 +3350,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3406,11 +3394,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3433,7 +3423,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3474,11 +3465,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3501,7 +3494,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3546,11 +3540,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3573,7 +3569,8 @@ ALU proc
 	movdqu xmm1, xmmword ptr [rsp + 16]
 	movdqu xmm2, xmmword ptr [rsp + 32]
 	movdqu xmm3, xmmword ptr [rsp + 48]
-	add rsp, 64
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	xorrm xmm12, xmm0, xmm0
 	xorrm xmm13, xmm1, xmm1
@@ -3603,11 +3600,13 @@ ALU proc
 	call fastCarry
 	add rsp, 136
 
-	sub rsp, 64
+	
+	sub rsp, 80
 	movdqu xmmword ptr [rsp], xmm0
 	movdqu xmmword ptr [rsp + 16], xmm1
 	movdqu xmmword ptr [rsp + 32], xmm2
 	movdqu xmmword ptr [rsp + 48], xmm3
+	movdqu xmmword ptr [rsp + 64], xmm15
 	push rax
 	sub rsp, 128
 	movdqu xmmword ptr [rsp], xmm12
@@ -3626,6 +3625,12 @@ ALU proc
 	or rax, r12
 	shl rax, 1
 	or rax, rdx
+	movdqu xmm0, xmmword ptr [rsp]
+	movdqu xmm1, xmmword ptr [rsp + 16]
+	movdqu xmm2, xmmword ptr [rsp + 32]
+	movdqu xmm3, xmmword ptr [rsp + 48]
+	movdqu xmm15, xmmword ptr [rsp + 64]
+	add rsp, 80
 
 	movdqu xmm0, xmmword ptr [rsp]
 	movdqu xmm1, xmmword ptr [rsp + 16]

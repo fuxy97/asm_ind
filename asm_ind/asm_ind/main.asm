@@ -68,7 +68,7 @@ endm
 	Message12 db "¬ведите y1: "
 	Message13 db "¬ведите y2: "
 	Message14 db "¬ведите y3: "
-	Message15 db "0: "
+	Message15 db "F0: "
 	Message16 db 0Dh, 0Ah, "F1: "
 	Message17 db 0Dh, 0Ah, "F2: "
 	Message18 db 0Dh, 0Ah, "F3: "

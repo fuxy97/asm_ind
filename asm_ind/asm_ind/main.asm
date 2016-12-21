@@ -56,13 +56,13 @@ endm
 ifm macro s0, s1, s2, s3, m, c0
 	push rbp
 	mov rbp, rsp
-	movdqu xmmword ptr [rbp + 8], s0
-	movdqu xmmword ptr [rbp + 24], s1
-	movdqu xmmword ptr [rbp + 40], s2
-	movdqu xmmword ptr [rbp + 56], s3
-	movdqu xmmword ptr [rbp + 72], m
-	movdqu xmmword ptr [rbp + 88], c0
-	sub rsp, 64
+	sub rsp, 160
+	movdqu xmmword ptr [rbp - 16], s0
+	movdqu xmmword ptr [rbp - 32], s1
+	movdqu xmmword ptr [rbp - 48], s2
+	movdqu xmmword ptr [rbp - 64], s3
+	movdqu xmmword ptr [rbp - 80], m
+	movdqu xmmword ptr [rbp - 96], c0
 
 	;_x
 	notm xmm0, xmm0
@@ -71,32 +71,32 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmm3, xmm3
 	xor rax,rax
 
-	notm xmmword ptr [rbp + 8], xmm4
-	notm xmmword ptr [rbp + 24], xmm5
-	notm xmmword ptr [rbp + 40], xmm6
-	notm xmmword ptr [rbp + 56], xmm7
-	notm xmmword ptr [rbp + 88], xmm8
+	notm xmmword ptr [rbp - 16], xmm4
+	notm xmmword ptr [rbp - 32], xmm5
+	notm xmmword ptr [rbp - 48], xmm6
+	notm xmmword ptr [rbp - 64], xmm7
+	notm xmmword ptr [rbp - 96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	pand xmm4, xmmword ptr [rbp + 72]
+	pand xmm4, xmmword ptr [rbp - 80]
 	pand xmm4, xmm8
 	pand xmm0, xmm4
 	pand xmm1, xmm4
 	pand xmm2, xmm4
 	pand xmm3, xmm4
-	movdqu xmm5, xmmword ptr [rbp - 16]
-	movdqu xmm6, xmmword ptr [rbp - 32]
-	movdqu xmm7, xmmword ptr [rbp - 48]
-	movdqu xmm8, xmmword ptr [rbp - 64]
+	movdqu xmm5, xmmword ptr [rbp - 112]
+	movdqu xmm6, xmmword ptr [rbp - 128]
+	movdqu xmm7, xmmword ptr [rbp - 144]
+	movdqu xmm8, xmmword ptr [rbp - 160]
 	por xmm5, xmm0
 	por xmm6, xmm1
 	por xmm7, xmm2
 	por xmm8, xmm3
-	movdqu xmmword ptr [rbp - 16], xmm5
-	movdqu xmmword ptr [rbp - 32], xmm6
-	movdqu xmmword ptr [rbp - 48], xmm7
-	movdqu xmmword ptr [rbp - 64], xmm8
+	movdqu xmmword ptr [rbp - 112], xmm5
+	movdqu xmmword ptr [rbp - 128], xmm6
+	movdqu xmmword ptr [rbp - 144], xmm7
+	movdqu xmmword ptr [rbp - 160], xmm8
 	
 	;_(xy)
 	andm xmm0, xmm4,xmm0
@@ -3609,11 +3609,12 @@ ifm macro s0, s1, s2, s3, m, c0
 	por xmm6, xmm1
 	por xmm7, xmm2
 	por xmm8, xmm3
-	movdqu xmmword ptr [rbp - 16], xmm5
-	movdqu xmmword ptr [rbp - 32], xmm6
-	movdqu xmmword ptr [rbp - 48], xmm7
-	movdqu xmmword ptr [rbp - 64], xmm8
-
+	movdqu xmm0, xmm5
+	movdqu xmm1, xmm6
+	movdqu xmm2, xmm7
+	movdqu xmm3, xmm8
+	add rsp, 160
+	pop rbp
 endm
 
 .data

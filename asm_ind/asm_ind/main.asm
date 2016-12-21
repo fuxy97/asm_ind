@@ -54,8 +54,10 @@ ornm macro x, y, z
 endm
 
 ifm macro s0, s1, s2, s3, m, c0
-	push rbp
+	mov rbx, rsp
 	and rsp, -16
+	push rbx
+	push rbp
 	mov rbp, rsp
 	sub rsp, 160
 	movdqu xmmword ptr [rbp - 16], s0
@@ -3617,8 +3619,9 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm1, xmm6
 	movdqu xmm2, xmm7
 	movdqu xmm3, xmm8
-	add rsp, 160
+	add rsp, 96
 	pop rbp
+	pop rsp
 endm
 
 .data

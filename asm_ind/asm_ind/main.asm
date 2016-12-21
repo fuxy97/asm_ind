@@ -3620,75 +3620,75 @@ ALU proc
 	cmp rax, 17h
 	je @f15
 	cmp rax, 1Fh
-	je @f0
+	je @f16
 
 	;c=0 M=0
 	cmp rax, 0h	
-	je @f16
-	cmp rax, 8h
 	je @f17
-	cmp rax, 4h
+	cmp rax, 8h
 	je @f18
-	cmp rax, 0Ch
+	cmp rax, 4h
 	je @f19
-	cmp rax, 2h
+	cmp rax, 0Ch
 	je @f20
-	cmp rax, 0Ah
+	cmp rax, 2h
 	je @f21
-	cmp rax, 6h
+	cmp rax, 0Ah
 	je @f22
-	cmp rax, 0Eh
-	je @f8
-	cmp rax, 1h
+	cmp rax, 6h
 	je @f23
-	cmp rax, 9h
+	cmp rax, 0Eh
 	je @f24
-	cmp rax, 5h
+	cmp rax, 1h
 	je @f25
-	cmp rax, 0Dh
-	je @f12
-	cmp rax, 3h
+	cmp rax, 9h
 	je @f26
-	cmp rax, 0Bh
+	cmp rax, 5h
 	je @f27
-	cmp rax, 7h
+	cmp rax, 0Dh
 	je @f28
+	cmp rax, 3h
+	je @f29
+	cmp rax, 0Bh
+	je @f30
+	cmp rax, 7h
+	je @f31
 	cmp rax, 0Fh
-	je @f0
+	je @f32
 
 	;c=1 M=0
 	cmp rax, 20h	
-	je @f0
-	cmp rax, 28h
-	je @f15
-	cmp rax, 24h
-	je @f14
-	cmp rax, 2Ch
-	je @f13
-	cmp rax, 22h
-	je @f29
-	cmp rax, 2Ah
-	je @f30
-	cmp rax, 26h
-	je @f31
-	cmp rax, 2Eh
-	je @f32
-	cmp rax, 21h
 	je @f33
-	cmp rax, 29h
+	cmp rax, 28h
 	je @f34
-	cmp rax, 25h
+	cmp rax, 24h
 	je @f35
-	cmp rax, 2Dh
+	cmp rax, 2Ch
 	je @f36
-	cmp rax, 23h
+	cmp rax, 22h
 	je @f37
-	cmp rax, 2Bh
+	cmp rax, 2Ah
 	je @f38
-	cmp rax, 27h
+	cmp rax, 26h
 	je @f39
-	cmp rax, 2Fh
+	cmp rax, 2Eh
 	je @f40
+	cmp rax, 21h
+	je @f41
+	cmp rax, 29h
+	je @f42
+	cmp rax, 25h
+	je @f43
+	cmp rax, 2Dh
+	je @f44
+	cmp rax, 23h
+	je @f45
+	cmp rax, 2Bh
+	je @f46
+	cmp rax, 27h
+	je @f47
+	cmp rax, 2Fh
+	je @f48
 
 	@f1:
 	pxor xmm10, xmm10
@@ -3706,6 +3706,421 @@ ALU proc
 	pxor xmm13, xmm13
 	pcmpeqb xmm14, xmm14
 	pxor xmm15, xmm15
+	jmp @end_switch
+	
+	@f3:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f4:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f5:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f6:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f7:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f8:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f9:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f10:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f11:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f12:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f13:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f14:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f15:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f16:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pcmpeqb xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	;-------------------
+	@f17:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f18:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+	
+	@f19:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f20:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f21:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f22:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f23:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f24:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f25:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f26:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f27:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f28:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f29:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f30:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f31:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+
+	@f32:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pxor xmm15, xmm15
+	jmp @end_switch
+	;-------------------
+	@f33:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f34:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+	
+	@f35:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f36:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f37:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f38:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f39:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f40:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pxor xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f41:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f42:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f43:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f44:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pxor xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f45:
+	pxor xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f46:
+	pcmpeqb xmm10, xmm10
+	pxor xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f47:
+	pxor xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
+	jmp @end_switch
+
+	@f48:
+	pcmpeqb xmm10, xmm10
+	pcmpeqb xmm11, xmm11
+	pcmpeqb xmm12, xmm12
+	pcmpeqb xmm13, xmm13
+	pxor xmm14, xmm14
+	pcmpeqb xmm15, xmm15
 	jmp @end_switch
 
 	@end_switch:

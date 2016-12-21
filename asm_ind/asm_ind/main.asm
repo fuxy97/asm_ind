@@ -55,6 +55,7 @@ endm
 
 ifm macro s0, s1, s2, s3, m, c0
 	push rbp
+	and rsp, -16
 	mov rbp, rsp
 	sub rsp, 160
 	movdqu xmmword ptr [rbp - 16], s0

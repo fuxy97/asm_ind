@@ -59,13 +59,21 @@ ifm macro s0, s1, s2, s3, m, c0
 	push rbx
 	push rbp
 	mov rbp, rsp
-	sub rsp, 160
+	sub rsp, 288
 	movdqu xmmword ptr [rbp - 16], s0
 	movdqu xmmword ptr [rbp - 32], s1
 	movdqu xmmword ptr [rbp - 48], s2
 	movdqu xmmword ptr [rbp - 64], s3
 	movdqu xmmword ptr [rbp - 80], m
 	movdqu xmmword ptr [rbp - 96], c0
+	movdqu xmmword ptr [rbp - 176], xmm0
+	movdqu xmmword ptr [rbp - 192], xmm1
+	movdqu xmmword ptr [rbp - 208], xmm2
+	movdqu xmmword ptr [rbp - 224], xmm3
+	movdqu xmmword ptr [rbp - 240], xmm4
+	movdqu xmmword ptr [rbp - 256], xmm5
+	movdqu xmmword ptr [rbp - 272], xmm6
+	movdqu xmmword ptr [rbp - 288], xmm7
 
 	;_x
 	notm xmm0, xmm0
@@ -102,6 +110,14 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmmword ptr [rbp - 160], xmm8
 	
 	;_(xy)
+	movdqu xmm0, xmmword ptr [rbp - 176]
+	movdqu xmm1, xmmword ptr [rbp - 192]
+	movdqu xmm2, xmmword ptr [rbp - 208]
+	movdqu xmm3, xmmword ptr [rbp - 224]
+	movdqu xmm4, xmmword ptr [rbp - 240]
+	movdqu xmm5, xmmword ptr [rbp - 256]
+	movdqu xmm6, xmmword ptr [rbp - 272]
+	movdqu xmm7, xmmword ptr [rbp - 288]
 	andm xmm0, xmm4,xmm0
 	andm xmm1, xmm5,xmm1
 	andm xmm2, xmm6,xmm2
@@ -3619,7 +3635,7 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm1, xmm6
 	movdqu xmm2, xmm7
 	movdqu xmm3, xmm8
-	add rsp, 96
+	add rsp, 224
 	pop rbp
 	pop rsp
 endm

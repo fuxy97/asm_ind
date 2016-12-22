@@ -60,6 +60,20 @@ ifm macro s0, s1, s2, s3, m, c0
 	push rbp
 	mov rbp, rsp
 	sub rsp, 288
+	cld
+	xor rax, rax
+	mov rcx, 2
+	lea rdi, [rbp - 112]
+	rep stosq
+	mov rcx, 2
+	lea rdi, [rbp - 128]
+	rep stosq
+	mov rcx, 2
+	lea rdi, [rbp - 144]
+	rep stosq
+	mov rcx, 2
+	lea rdi, [rbp - 160]
+	rep stosq
 	movdqu xmmword ptr [rbp - 16], s0
 	movdqu xmmword ptr [rbp - 32], s1
 	movdqu xmmword ptr [rbp - 48], s2

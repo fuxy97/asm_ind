@@ -410,6 +410,7 @@ ifm macro s0, s1, s2, s3, m, c0
 	orm xmm1, xmm5,xmm1
 	orm xmm2, xmm6,xmm2
 	orm xmm3, xmm7,xmm3
+	xor rax,rax
 	
 	movdqu  xmm4,xmmword ptr [rbp -16]
 	movdqu  xmm5,xmmword ptr [rbp -32]
@@ -1059,11 +1060,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1206,11 +1207,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm5, xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp -48], xmm6
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1253,11 +1254,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm5, xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp -48], xmm6
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1361,11 +1362,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6, xmmword ptr [rbp -48]
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1477,11 +1478,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6, xmmword ptr [rbp -48]
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1689,11 +1690,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm5, xmmword ptr [rbp -32]
 	movdqu xmm6, xmmword ptr [rbp -48]
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1735,11 +1736,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu  xmm5,xmmword ptr [rbp -32]
 	movdqu  xmm6,xmmword ptr [rbp -48]
 	notm xmmword ptr [rbp -64], xmm7
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9, xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1839,11 +1840,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
 	movdqu  xmm7,xmmword ptr [rbp -64]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9, xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -1939,11 +1940,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
 	movdqu  xmm7,xmmword ptr [rbp -64]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9, xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2055,11 +2056,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu  xmm5,xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp + 48], xmm6
 	movdqu  xmm7,xmmword ptr [rbp -64]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9, xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2098,11 +2099,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm5,xmmword ptr [rbp -32] 
 	notm xmmword ptr [rbp -48], xmm6
 	movdqu xmm7,xmmword ptr [rbp -64] 
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2198,11 +2199,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6,xmmword ptr [rbp -48] 
 	movdqu xmm7,xmmword ptr [rbp -64] 
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2301,12 +2302,12 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4,xmmword ptr [rbp -16] 
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6,xmmword ptr [rbp -48] 
-	movdqu xmm7,xmmword ptr [rbp -64] 
+	movdqu xmm7,xmmword ptr [rbp -64]
+	notm xmmword ptr [rbp -80], xmm9 
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2410,11 +2411,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm5,xmmword ptr [rbp -32] 
 	movdqu xmm6,xmmword ptr [rbp -48] 
 	movdqu xmm7,xmmword ptr [rbp -64] 
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2448,11 +2449,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm5,xmmword ptr [rbp -32] 
 	movdqu xmm6,xmmword ptr [rbp -48] 
 	movdqu xmm7,xmmword ptr [rbp -64] 
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
@@ -2485,11 +2486,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -2527,11 +2528,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -2573,11 +2574,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	movdqu xmm5, xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -2615,11 +2616,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	movdqu xmm5, xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp-64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -2724,11 +2725,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -2840,11 +2841,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3036,11 +3037,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	movdqu xmm5, xmmword ptr [rbp -32]
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3143,11 +3144,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	movdqu xmm5, xmmword ptr [rbp -32]
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -64], xmm7
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3247,11 +3248,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp +-80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3347,11 +3348,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3463,11 +3464,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	movdqu xmm5, xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3566,11 +3567,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	movdqu xmm5, xmmword ptr [rbp -32]
 	notm xmmword ptr [rbp -48], xmm6
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3665,11 +3666,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3769,11 +3770,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	notm xmmword ptr [rbp -32], xmm5
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3877,11 +3878,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -16], xmm4
 	movdqu xmm5, xmmword ptr [rbp -32]
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4
@@ -3982,11 +3983,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	movdqu xmm4, xmmword ptr [rbp -16]
 	movdqu xmm5, xmmword ptr [rbp -32]
 	movdqu xmm6, xmmword ptr [rbp -48]
+	notm xmmword ptr [rbp -80], xmm9
 	movdqu xmm7, xmmword ptr [rbp -64]
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
-	por xmm9,xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmmword ptr [rbp -96]
 	pand xmm0, xmm4

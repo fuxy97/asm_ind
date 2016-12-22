@@ -908,11 +908,11 @@ ifm macro s0, s1, s2, s3, m, c0
 	notm xmmword ptr [rbp -32], xmm5
 	notm xmmword ptr [rbp -48], xmm6
 	notm xmmword ptr [rbp -64], xmm7
-	notm xmmword ptr [rbp -80], xmm9
 	notm xmmword ptr [rbp -96], xmm8
 	pand xmm4, xmm5
 	pand xmm4, xmm6
 	pand xmm4, xmm7
+	por xmm9,  xmmword ptr [rbp -80]
 	pand xmm4, xmm9
 	pand xmm4, xmm8
 	pand xmm0, xmm4
